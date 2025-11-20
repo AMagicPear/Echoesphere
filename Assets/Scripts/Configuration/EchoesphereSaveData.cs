@@ -4,13 +4,13 @@ using System.IO;
 using Helpers;
 using UnityEngine;
 
-namespace Configuration
-{
+namespace Configuration {
     [Serializable]
     public class EchoesphereSaveData {
         public Dictionary<string, object> Objects;
         public int saveVersion;
-    
+        public static string FilePath => Application.persistentDataPath + "/saveData.gz";
+
         public EchoesphereSaveData(int saveVersion) {
             this.saveVersion = saveVersion;
             Objects = new Dictionary<string, object>();
@@ -19,15 +19,15 @@ namespace Configuration
         public void WriteToFile() {
             var json = JsonUtility.ToJson(this);
             var compressed = CompressionHelper.GZipCompress(json);
-            File.WriteAllBytes(Application.persistentDataPath + "/saveData.gz", compressed);
+            File.WriteAllBytes(FilePath, compressed);
         }
-        
+
         public static EchoesphereSaveData ReadFromFile() {
-            var path = Application.persistentDataPath + "/saveData.gz";
-            if (!File.Exists(path)) {
+            if (!File.Exists(FilePath)) {
                 return new EchoesphereSaveData(0);
             }
-            var compressed = File.ReadAllBytes(path);
+
+            var compressed = File.ReadAllBytes(FilePath);
             var json = CompressionHelper.GZipDecompress(compressed);
             return JsonUtility.FromJson<EchoesphereSaveData>(json);
         }
