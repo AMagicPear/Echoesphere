@@ -1,6 +1,8 @@
 {
     "name": "Echoesphere.Runtime",
-    "references": [],
+    "references": [
+      "Unity.InputSystem"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
