@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 namespace Traveler {
     [RequireComponent(typeof(PlayerInput))]
@@ -9,7 +8,6 @@ namespace Traveler {
         public float moveSpeed = 2.0f;
         public Vector2 moveInput;
         [Range(0.0f, 0.3f)] public float rotationSmoothTime = 0.12f;
-        public float gravity = -9.81f;
 
         private CharacterController _controller;
         private GameObject _mainCamera;
@@ -56,9 +54,8 @@ namespace Traveler {
         }
 
         private void ApplyGravity() {
-            // _verticalVelocity = -0.1f;
             if (!_controller.isGrounded) {
-                _verticalVelocity += gravity * Time.deltaTime;
+                _verticalVelocity += Physics.gravity.y * Time.deltaTime;
             } else {
                 _verticalVelocity = -.5f;
             }
