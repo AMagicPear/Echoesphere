@@ -31,7 +31,7 @@ namespace Traveler {
             _controller = GetComponent<CharacterController>();
         }
 
-        private void Update() {
+        private void FixedUpdate() {
             ApplyGravity();
             Move();
         }

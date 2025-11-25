@@ -8,7 +8,7 @@ namespace Configuration.Providers {
         public string UniqueId => id;
         
         [Serializable]
-        public struct TestState {
+        public record TestState {
             public int value1;
             public float value2;
             public string value3;
