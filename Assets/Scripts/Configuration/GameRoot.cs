@@ -6,6 +6,7 @@ namespace Configuration {
 
         [Header("Managers")]
         public SaveManager saveManager;
+        public RaspberryPi.RaspberryPiCommunicator rasPiCommunicator;
 
         private void Awake() {
             if (Instance) {

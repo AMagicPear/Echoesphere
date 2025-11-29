@@ -3,6 +3,12 @@ using System.Threading;
 using UnityEngine;
 
 namespace RaspberryPi {
+    public enum CommunicateType {
+        None,
+        HitBlockColor,
+        Init,
+    }
+
     public class RaspberryPiCommunicator : MonoBehaviour {
         [Header("Raspberry Pi Settings")] public string piIpAddress;
         public ushort port;
@@ -12,8 +18,20 @@ namespace RaspberryPi {
         private bool _connected;
         private Thread _receiveThread;
 
-        private void Start() {
+        private void Awake() {
             ConnectToPi();
+        }
+
+        private void OnDestroy() {
+            if (!_connected) return;
+            _connected = false;
+            _stream.Close();
+            _client.Close();
+            _receiveThread.Join();
+        }
+
+        private void Start() {
+            SendData(CommunicateType.Init, $"Raspberry Pi {piIpAddress}:{port}");
         }
 
         private void ConnectToPi() {
@@ -51,6 +69,13 @@ namespace RaspberryPi {
                     _connected = false;
                 }
             }
+        }
+
+        public void SendData(CommunicateType communicateType, object data) {
+            if (!_connected) return;
+            Debug.Log($"Sending data to Raspberry Pi: {communicateType}:{data}");
+            var buffer = System.Text.Encoding.UTF8.GetBytes($"{{\"{communicateType}\":\"{data}\"}}");
+            _stream.Write(buffer, 0, buffer.Length);
         }
     }
 }
