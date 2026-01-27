@@ -1,4 +1,3 @@
-using System;
 using Configuration;
 using RaspberryPi;
 using UnityEngine;
