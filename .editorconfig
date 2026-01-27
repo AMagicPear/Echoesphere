@@ -1,0 +1,4 @@
+[*.cs]
+
+# 左括号不换行
+csharp_new_line_before_open_brace = none
