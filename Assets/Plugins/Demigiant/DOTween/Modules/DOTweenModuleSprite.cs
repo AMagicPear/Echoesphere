@@ -1,7 +1,7 @@
-// Author: Daniele Giardini - http://www.demigiant.com
+﻿// Author: Daniele Giardini - http://www.demigiant.com
 // Created: 2018/07/13
 
-#if false // MODULE_MARKER
+#if !DOTWEEN_NOSPRITES // MODULE_MARKER
 using System;
 using UnityEngine;
 using DG.Tweening.Core;
