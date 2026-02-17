@@ -472,7 +472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a815e2dd9d89c48ea888c8f5cc15c2d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Echoesphere.Runtime::RaspberryPi.RaspberryPiCommunicator
-  piWebSocketUri: ws://192.168.1.105:65432
+  listenUri: http://*:65432/
 --- !u!1 &251814119
 GameObject:
   m_ObjectHideFlags: 0
