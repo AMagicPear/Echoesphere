@@ -19,8 +19,7 @@ namespace RaspberryPi {
         private SynchronizationContext _mainThreadContext;
 
         // 存储所有已连接的客户端，使用连接ID作为键（这里用客户端的远程端点字符串）
-        private ConcurrentDictionary<string, ClientHandler>
-            _clients = new ConcurrentDictionary<string, ClientHandler>();
+        private readonly ConcurrentDictionary<string, ClientHandler> _clients = new();
 
         private async void Start() {
             _mainThreadContext = SynchronizationContext.Current;
@@ -54,7 +53,7 @@ namespace RaspberryPi {
         /// <summary>
         /// 移除客户端（由ClientHandler内部调用）
         /// </summary>
-        public void RemoveClient(string clientId) {
+        private void RemoveClient(string clientId) {
             if (_clients.TryRemove(clientId, out var handler)) {
                 Debug.Log($"客户端 {clientId} 已断开");
             }
@@ -63,9 +62,9 @@ namespace RaspberryPi {
         /// <summary>
         /// 广播消息给所有已连接的客户端
         /// </summary>
-        public async void BroadcastMessage(string message) {
-            byte[] data = Encoding.UTF8.GetBytes(message);
-            byte[] lengthPrefix = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(data.Length));
+        public new async void BroadcastMessage(string message) {
+            var data = Encoding.UTF8.GetBytes(message);
+            var lengthPrefix = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(data.Length));
 
             foreach (var handler in _clients.Values) {
                 try {
@@ -83,8 +82,8 @@ namespace RaspberryPi {
         /// </summary>
         public async void SendToClient(string clientId, string message) {
             if (_clients.TryGetValue(clientId, out var handler)) {
-                byte[] data = Encoding.UTF8.GetBytes(message);
-                byte[] lengthPrefix = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(data.Length));
+                var data = Encoding.UTF8.GetBytes(message);
+                var lengthPrefix = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(data.Length));
                 try {
                     await handler.SendAsync(data, lengthPrefix);
                     Debug.Log($"发送消息给 {clientId}: {message}");
@@ -127,7 +126,7 @@ namespace RaspberryPi {
             }
 
             public async Task StartAsync() {
-                byte[] lengthBuffer = new byte[4];
+                var lengthBuffer = new byte[4];
                 try {
                     while (_tcpClient.Connected) {
                         // 读取消息长度
@@ -139,10 +138,10 @@ namespace RaspberryPi {
                             bytesRead += read;
                         }
 
-                        int msgLength = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(lengthBuffer, 0));
+                        var msgLength = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(lengthBuffer, 0));
 
                         // 读取消息内容
-                        byte[] msgBuffer = new byte[msgLength];
+                        var msgBuffer = new byte[msgLength];
                         bytesRead = 0;
                         while (bytesRead < msgLength) {
                             int read = await _stream.ReadAsync(msgBuffer, bytesRead, msgLength - bytesRead,
@@ -167,8 +166,8 @@ namespace RaspberryPi {
             }
 
             public async Task SendAsync(byte[] data, byte[] lengthPrefix) {
-                await _stream.WriteAsync(lengthPrefix, 0, 4);
-                await _stream.WriteAsync(data, 0, data.Length);
+                await _stream.WriteAsync(lengthPrefix, 0, 4, _cancellationToken);
+                await _stream.WriteAsync(data, 0, data.Length, _cancellationToken);
             }
 
             public void Dispose() {
