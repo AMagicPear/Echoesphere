@@ -16,7 +16,7 @@ namespace Stuff {
 
         private void OnTriggerEnter(Collider other) {
             if(other.CompareTag("Player") && Communicator) {
-                Communicator.SendData($"HitBlockColor: {hitNote}");
+                Communicator.BroadcastMessage($"HitBlockColor: {hitNote}");
             }
         }
     }
