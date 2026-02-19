@@ -15,9 +15,12 @@ namespace Stuff {
         private static RaspberryPiCommunicator Communicator => GameRoot.Instance.rasPiCommunicator;
 
         private void OnTriggerEnter(Collider other) {
-            if(other.CompareTag("Player") && Communicator) {
+            if (other.CompareTag("Player") && Communicator) {
                 Communicator.BroadcastMessage($"HitBlockColor: {hitNote}");
+                StartCoroutine(Communicator.BroadcastScreenshot());
             }
         }
     }
+    
+    
 }
