@@ -1,4 +1,4 @@
-namespace Configuration {
+namespace Echoesphere.Runtime.Configuration {
     public interface ISaveProvider {
         object CaptureState();
         

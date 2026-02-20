@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Configuration {
+namespace Echoesphere.Runtime.Configuration {
     public class SettingManager : MonoBehaviour {
         [SerializeField] private int settingVersion;
         

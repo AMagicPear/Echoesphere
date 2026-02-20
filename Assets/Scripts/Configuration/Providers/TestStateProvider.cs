@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Configuration.Providers {
+namespace Echoesphere.Runtime.Configuration.Providers {
     public class TestStateProvider : MonoBehaviour, ISaveProvider {
         [SerializeField] private string id;
         public string UniqueId => id;

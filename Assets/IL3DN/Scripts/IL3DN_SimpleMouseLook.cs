@@ -1,7 +1,8 @@
-﻿namespace IL3DN
+﻿using System;
+using UnityEngine;
+
+namespace IL3DN.Scripts
 {
-    using System;
-    using UnityEngine;
     /// <summary>
     /// Class provided by Standard  Assets
     /// </summary>

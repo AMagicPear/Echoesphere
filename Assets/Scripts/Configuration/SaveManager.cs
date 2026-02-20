@@ -1,7 +1,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace Configuration {
+namespace Echoesphere.Runtime.Configuration {
     public class SaveManager : MonoBehaviour {
         public EchoesphereSaveData Current { get; private set; }
 

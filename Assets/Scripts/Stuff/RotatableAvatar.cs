@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Stuff {
+namespace Echoesphere.Runtime.Stuff {
     public class RotatableAvatar : MonoBehaviour {
         private int facingAt = 0;
 

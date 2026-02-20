@@ -2,7 +2,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-namespace Helpers {
+namespace Echoesphere.Runtime.Helpers {
     /// <summary>
     /// 压缩帮助类
     /// </summary>

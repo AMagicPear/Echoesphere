@@ -1,11 +1,10 @@
-using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using DG.Tweening;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
-namespace UI {
+namespace Echoesphere.Runtime.UI {
     public class ButtonScale : MonoBehaviour {
         [Header("References")] public Selectable[] selectables;
         [Header("Animation")] [SerializeField] protected float selectedScale = 1.1f;

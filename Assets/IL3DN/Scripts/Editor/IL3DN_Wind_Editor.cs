@@ -1,10 +1,10 @@
-﻿namespace IL3DN
-{
-    using UnityEngine;
-    using UnityEditor;
+﻿using UnityEditor;
+using UnityEngine;
 
+namespace IL3DN.Scripts.Editor
+{
     [CustomEditor(typeof(IL3DN_Wind))]
-    public class IL3DN_Wind_Editor : Editor
+    public class IL3DN_Wind_Editor : UnityEditor.Editor
     {
 
         Texture2D IL3DN_WindDirectionLabel;

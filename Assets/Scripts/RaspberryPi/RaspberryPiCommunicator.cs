@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace RaspberryPi {
+namespace Echoesphere.Runtime.RaspberryPi {
     public class RaspberryPiCommunicator : MonoBehaviour {
         [Header("服务器设置")] public int port = 65432;
 

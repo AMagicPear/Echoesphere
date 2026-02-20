@@ -1,5 +1,5 @@
 using System.IO;
-using Configuration;
+using Echoesphere.Runtime.Configuration;
 using NUnit.Framework;
 
 namespace Tests {

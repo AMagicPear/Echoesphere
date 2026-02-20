@@ -1,6 +1,7 @@
-namespace IL3DN
+using UnityEngine;
+
+namespace IL3DN.Scripts
 {
-    using UnityEngine;
     [ExecuteInEditMode]
 
     public class IL3DN_Wind : MonoBehaviour

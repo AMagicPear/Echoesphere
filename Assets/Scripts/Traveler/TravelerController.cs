@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Traveler {
+namespace Echoesphere.Runtime.Traveler {
     [RequireComponent(typeof(PlayerInput))]
     [RequireComponent(typeof(CharacterController))]
     public class TravelerController : MonoBehaviour {

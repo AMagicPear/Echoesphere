@@ -1,9 +1,9 @@
 ﻿using System;
-using Stuff;
+using Echoesphere.Runtime.Stuff;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Puzzle {
+namespace Echoesphere.Runtime.Puzzle {
     public class AvatarRotating : MonoBehaviour {
         public RotatableAvatar[] avatars;
         public int[] rotationGroups;

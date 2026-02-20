@@ -1,8 +1,8 @@
-using Configuration;
-using RaspberryPi;
+using Echoesphere.Runtime.Configuration;
+using Echoesphere.Runtime.RaspberryPi;
 using UnityEngine;
 
-namespace Stuff {
+namespace Echoesphere.Runtime.Stuff {
     internal enum HitNote {
         Red,
         Blue,
@@ -15,10 +15,9 @@ namespace Stuff {
         private static RaspberryPiCommunicator Communicator => GameRoot.Instance.rasPiCommunicator;
 
         private void OnTriggerEnter(Collider other) {
-            if (other.CompareTag("Player") && Communicator) {
-                Communicator.BroadcastMessage($"HitBlockColor: {hitNote}");
-                StartCoroutine(Communicator.BroadcastScreenshot());
-            }
+            if (!other.CompareTag("Player") || !Communicator) return;
+            _ = Communicator.SendToAll($"HitBlockColor: {hitNote}");
+            StartCoroutine(Communicator.BroadcastScreenshot());
         }
     }
     

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Configuration {
+namespace Echoesphere.Runtime.Configuration {
     public class GameRoot : MonoBehaviour {
         public static GameRoot Instance { get; private set; }
 

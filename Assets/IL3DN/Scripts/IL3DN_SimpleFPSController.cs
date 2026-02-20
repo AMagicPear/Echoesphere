@@ -1,6 +1,7 @@
-namespace IL3DN
+using UnityEngine;
+
+namespace IL3DN.Scripts
 {
-    using UnityEngine;
     using Random = UnityEngine.Random;
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(AudioSource))]

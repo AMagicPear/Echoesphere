@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Helpers;
+using Echoesphere.Runtime.Helpers;
 using UnityEngine;
 
-namespace Configuration {
+namespace Echoesphere.Runtime.Configuration {
     [Serializable]
     public class EchoesphereSaveData {
         public Dictionary<string, object> Objects;
