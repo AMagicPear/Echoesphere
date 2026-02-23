@@ -5,13 +5,14 @@ namespace Echoesphere.Runtime.Traveler {
     [RequireComponent(typeof(PlayerInput))]
     [RequireComponent(typeof(CharacterController))]
     public class TravelerController : MonoBehaviour {
+        private static readonly int Speed = Animator.StringToHash("speed");
         public float moveSpeed = 2.0f;
         public Vector2 moveInput;
         [Range(0.0f, 0.3f)] public float rotationSmoothTime = 0.12f;
+        public Animator animator;
 
         private CharacterController _controller;
         private GameObject _mainCamera;
-        private float _speed;
         private float _targetRotation;
         private float _rotationVelocity;
         private float _verticalVelocity;
@@ -34,6 +35,7 @@ namespace Echoesphere.Runtime.Traveler {
         private void FixedUpdate() {
             ApplyGravity();
             Move();
+            ApplyAnimation();
         }
 
         private void Move() {
@@ -60,5 +62,12 @@ namespace Echoesphere.Runtime.Traveler {
                 _verticalVelocity = -.5f;
             }
         }
+
+        private void ApplyAnimation() {
+            animator.SetFloat(Speed, _controller.velocity.magnitude);
+        }
+
+        // private void OnControllerColliderHit(ControllerColliderHit hit) {
+        // }
     }
 }
