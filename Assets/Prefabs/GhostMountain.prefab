@@ -75,5 +75,30 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 26a709cfbc3dddc47be1b9e4b9707db0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2252559345373069217}
   m_SourcePrefab: {fileID: 100100000, guid: 26a709cfbc3dddc47be1b9e4b9707db0, type: 3}
+--- !u!1 &2033330957800344883 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 26a709cfbc3dddc47be1b9e4b9707db0, type: 3}
+  m_PrefabInstance: {fileID: 1222373712669683810}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2252559345373069217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033330957800344883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aee4cd8121d4c4baa64965c80c723e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Echoesphere.Runtime::Echoesphere.Runtime.Stuff.GhostMountain
+  wobbleSpeed: 0.2
+  initialWobbleSpeed: 0.2
+  wobbleIntensity: 1
+  initialWobbleIntensity: 1
+  mountainMaterial: {fileID: 2100000, guid: e0f6c9f74320ee04b8c6d2b8a46ed766, type: 2}

@@ -2,13 +2,13 @@
 
 namespace Echoesphere.Runtime.Stuff {
     public class RotatableAvatar : MonoBehaviour {
-        private int facingAt = 0;
+        private int _facingAt = 0;
 
-        public int FacingAt {
-            get => facingAt;
-            private set {
-                facingAt = value;
-                transform.rotation = Quaternion.Euler(0, 0, facingAt * 90);
+        private int FacingAt {
+            get => _facingAt;
+            set {
+                _facingAt = value;
+                transform.rotation = Quaternion.Euler(0, 0, _facingAt * 90);
             }
         }
 

@@ -54,6 +54,8 @@ Material:
     - _FresnelPower: 2.28
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _WobbleIntensity: 0.2
+    - _WobbleSpeed: 0.2
     m_Colors:
     - _FresnelColor: {r: 0.37931845, g: 0.9221513, b: 0.10621638, a: 1}
   m_BuildTextureStacks: []
