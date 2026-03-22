@@ -2,6 +2,6 @@
   <Project Path="Assembly-CSharp-firstpass.csproj" />
   <Project Path="Echoesphere.Runtime.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
-  <Project Path="Echoesphere.Tests.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="Echoesphere.Tests.csproj" />
 </Solution>
