@@ -14,6 +14,7 @@ namespace Echoesphere.Runtime.RaspberryPi {
 
         public event Action<string> OnMessageReceived;
         public event Action<byte[]> OnImageReceived;
+        public event Action<bool> OnConnectionStatusChanged;
 
         private TcpClient _tcpClient;
         private NetworkStream _stream;
@@ -35,10 +36,26 @@ namespace Echoesphere.Runtime.RaspberryPi {
                 _stream = _tcpClient.GetStream();
                 _isConnected = true;
                 Debug.Log($"[客户端] 已连接至 {host}:{port}");
+
+                // 发送注册消息
+                await SendRegister();
+
+                _mainThreadContext.Post(_ => OnConnectionStatusChanged?.Invoke(true), null);
                 _ = ReceiveLoopAsync();
             } catch (Exception ex) {
                 Debug.LogError($"[客户端] 连接失败: {ex.Message}");
+                _mainThreadContext.Post(_ => OnConnectionStatusChanged?.Invoke(false), null);
             }
+        }
+
+        private async Task SendRegister() {
+            var registerMsg = new RegisterMessage {
+                type = "register",
+                client_type = "unity"
+            };
+            string json = JsonUtility.ToJson(registerMsg);
+            await SendText(json);
+            Debug.Log($"[客户端] 已发送注册消息: {json}");
         }
 
         private async Task ReceiveLoopAsync() {
@@ -76,6 +93,11 @@ namespace Echoesphere.Runtime.RaspberryPi {
                             Debug.Log($"[收到] 图像，大小={payload.Length}字节");
                             _mainThreadContext.Post(_ => OnImageReceived?.Invoke(payload), null);
                             break;
+                        case MessageType.Command:
+                            string cmdJson = Encoding.UTF8.GetString(payload);
+                            Debug.Log($"[收到命令] {cmdJson}");
+                            _mainThreadContext.Post(_ => OnMessageReceived?.Invoke(cmdJson), null);
+                            break;
                         default:
                             Debug.LogWarning($"[未知] 消息类型 {(byte)msgType}");
                             break;
@@ -108,6 +130,8 @@ namespace Echoesphere.Runtime.RaspberryPi {
 
         public Task SendImage(byte[] imageBytes) => SendAsync(MessageType.Image, imageBytes);
 
+        public Task SendCommand(string commandJson) => SendAsync(MessageType.Command, Encoding.UTF8.GetBytes(commandJson));
+
         /// <summary> 发送截图 </summary>
         public IEnumerator SendScreenshot() {
             yield return new WaitForEndOfFrame();
@@ -134,6 +158,7 @@ namespace Echoesphere.Runtime.RaspberryPi {
             _isConnected = false;
             _stream?.Close();
             _tcpClient?.Close();
+            _mainThreadContext.Post(_ => OnConnectionStatusChanged?.Invoke(false), null);
             Debug.Log("[客户端] 已断开连接");
         }
 
@@ -148,7 +173,16 @@ namespace Echoesphere.Runtime.RaspberryPi {
         // 消息类型枚举
         private enum MessageType : byte {
             Text = 0x00,
-            Image = 0x01
+            Image = 0x01,
+            Command = 0x02,
+            Register = 0x03
+        }
+
+        // 注册消息结构
+        [Serializable]
+        private class RegisterMessage {
+            public string type;
+            public string client_type;
         }
     }
 }
