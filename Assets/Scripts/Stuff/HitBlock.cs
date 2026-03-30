@@ -1,5 +1,5 @@
 using Echoesphere.Runtime.Configuration;
-using Echoesphere.Runtime.RaspberryPi;
+using Echoesphere.Runtime.Agent;
 using UnityEngine;
 
 namespace Echoesphere.Runtime.Stuff {
@@ -12,10 +12,10 @@ namespace Echoesphere.Runtime.Stuff {
 
     public class HitBlock : MonoBehaviour {
         [SerializeField] private HitNote hitNote;
-        private static RaspberryPiCommunicator Communicator => GameRoot.Instance.rasPiCommunicator;
+        private static AgentCommunicator Communicator => GameRoot.Instance.rasPiCommunicator;
 
         private void OnTriggerEnter(Collider other) {
-            if (!other.CompareTag("Player") || !Communicator) return;
+            if (!other.CompareTag("Player")) return;
             _ = Communicator.SendText($"HitBlockColor: {hitNote}");
             StartCoroutine(Communicator.SendScreenshot());
         }

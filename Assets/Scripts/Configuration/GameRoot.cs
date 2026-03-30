@@ -6,7 +6,7 @@ namespace Echoesphere.Runtime.Configuration {
 
         [Header("Managers")]
         public SaveManager saveManager;
-        public RaspberryPi.RaspberryPiCommunicator rasPiCommunicator;
+        public Agent.AgentCommunicator rasPiCommunicator;
 
         private void Awake() {
             if (Instance) {

@@ -7,8 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Echoesphere.Runtime.RaspberryPi {
-    public class RaspberryPiCommunicator : MonoBehaviour {
+
+namespace Echoesphere.Runtime.Agent {
+    public class AgentCommunicator : MonoBehaviour {
         [Header("服务器设置")] public string host = "127.0.0.1";
         [Header("服务器端口")] public int port = 65432;
 
@@ -98,6 +99,14 @@ namespace Echoesphere.Runtime.RaspberryPi {
                             Debug.Log($"[收到命令] {cmdJson}");
                             _mainThreadContext.Post(_ => OnMessageReceived?.Invoke(cmdJson), null);
                             break;
+                        case MessageType.Request:
+                            string reqJson = Encoding.UTF8.GetString(payload);
+                            Debug.Log($"[收到请求] {reqJson}");
+                            var req = JsonUtility.FromJson<RequestMessage>(reqJson);
+                            if (req != null && req.cmd == "request_screenshot") {
+                                StartCoroutine(SendScreenshotWithRequestId(req.request_id));
+                            }
+                            break;
                         default:
                             Debug.LogWarning($"[未知] 消息类型 {(byte)msgType}");
                             break;
@@ -154,6 +163,37 @@ namespace Echoesphere.Runtime.RaspberryPi {
                 Debug.Log("[截图] 发送完成");
         }
 
+        /// <summary> 发送带 request_id 的截图响应 </summary>
+        private IEnumerator SendScreenshotWithRequestId(string requestId) {
+            yield return new WaitForEndOfFrame();
+
+            int width = Screen.width;
+            int height = Screen.height;
+            var tex = new Texture2D(width, height, TextureFormat.RGB24, false);
+            tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+            tex.Apply();
+
+            byte[] jpgBytes = tex.EncodeToJPG(75);
+            Destroy(tex);
+
+            // 构造 RESPONSE 消息: JSON元数据 + '\n' + 原始图片字节
+            var meta = new ResponseMeta { request_id = requestId };
+            string metaJson = JsonUtility.ToJson(meta);
+            byte[] metaBytes = Encoding.UTF8.GetBytes(metaJson);
+            byte[] payload = new byte[metaBytes.Length + 1 + jpgBytes.Length];
+            Array.Copy(metaBytes, 0, payload, 0, metaBytes.Length);
+            payload[metaBytes.Length] = (byte)'\n';
+            Array.Copy(jpgBytes, 0, payload, metaBytes.Length + 1, jpgBytes.Length);
+
+            var sendTask = SendAsync(MessageType.Response, payload);
+            yield return new WaitUntil(() => sendTask.IsCompleted);
+
+            if (sendTask.Exception != null)
+                Debug.LogError($"[截图响应异常] {sendTask.Exception}");
+            else
+                Debug.Log($"[截图响应] 发送完成, request_id={requestId}");
+        }
+
         private void Disconnect() {
             _isConnected = false;
             _stream?.Close();
@@ -175,7 +215,9 @@ namespace Echoesphere.Runtime.RaspberryPi {
             Text = 0x00,
             Image = 0x01,
             Command = 0x02,
-            Register = 0x03
+            Register = 0x03,
+            Request = 0x04,
+            Response = 0x05
         }
 
         // 注册消息结构
@@ -183,6 +225,20 @@ namespace Echoesphere.Runtime.RaspberryPi {
         private class RegisterMessage {
             public string type;
             public string client_type;
+        }
+
+        // 请求消息结构
+        [Serializable]
+        private class RequestMessage {
+            public string request_id;
+            public string cmd;
+            public string source;
+        }
+
+        // 响应元数据结构
+        [Serializable]
+        private class ResponseMeta {
+            public string request_id;
         }
     }
 }
