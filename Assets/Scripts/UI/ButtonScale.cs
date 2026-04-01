@@ -7,15 +7,15 @@ using UnityEngine.UI;
 namespace Echoesphere.Runtime.UI {
     public class ButtonScale : MonoBehaviour {
         [Header("References")] public Selectable[] selectables;
-        [Header("Animation")] [SerializeField] protected float selectedScale = 1.1f;
+        [Header("Animation")][SerializeField] protected float selectedScale = 1.1f;
         [SerializeField] protected float scaleDuration = 0.25f;
-        
+
         [Header("Controls")]
         [SerializeField] protected InputActionReference navigateAction;
 
         private Tween _scaleUpTween;
         private Tween _scaleDownTween;
-        
+
         private Selectable _lastSelected;
 
         private void Awake() {

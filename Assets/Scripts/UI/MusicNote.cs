@@ -10,6 +10,7 @@ namespace Echoesphere.Runtime.UI {
         Breeze
     }
 
+    [RequireComponent(typeof(Image))]
     public class MusicNote : MonoBehaviour {
         [Header("Settings")]
         public NoteType noteType;
@@ -35,17 +36,15 @@ namespace Echoesphere.Runtime.UI {
         private Tween _playTween;
 
         private bool _isAcquired;
-        private bool _hasBeenPlayed;
 
         private static readonly Color[] NoteColors = {
-            new Color(0.4f, 0.8f, 1f, 1f),      // WaterDrop - 淡蓝水色
-            new Color(1f, 0.85f, 0.6f, 1f),    // Crossing - 温暖金色
-            new Color(0.3f, 0.6f, 0.9f, 1f),    // Tide - 深海蓝
-            new Color(0.7f, 1f, 0.8f, 1f)       // Breeze - 清新绿风
+            new(0.4f, 0.8f, 1f, 1f),      // WaterDrop - 淡蓝水色
+            new(1f, 0.85f, 0.6f, 1f),    // Crossing - 温暖金色
+            new(0.3f, 0.6f, 0.9f, 1f),    // Tide - 深海蓝
+            new(0.7f, 1f, 0.8f, 1f)       // Breeze - 清新绿风
         };
 
         public bool IsAcquired => _isAcquired;
-        public bool HasBeenPlayed => _hasBeenPlayed;
 
         private void Awake() {
             if (noteImage == null) noteImage = GetComponent<Image>();
@@ -87,15 +86,11 @@ namespace Echoesphere.Runtime.UI {
         }
 
         /// <summary>
-        /// 弹奏音符
+        /// 弹奏音符，播放缩放+变色动画
         /// </summary>
         public void Play() {
             if (!_isAcquired || _playTween != null) return;
-
-            if (!_hasBeenPlayed) {
-                _hasBeenPlayed = true;
-                _playTween = PlayFirstTimeAnimation();
-            }
+            _playTween = PlayAnimation();
         }
 
         /// <summary>
@@ -103,7 +98,6 @@ namespace Echoesphere.Runtime.UI {
         /// </summary>
         public void Reset() {
             _isAcquired = false;
-            _hasBeenPlayed = false;
 
             _fadeTween.Kill();
             _connectionLineTween.Kill();
@@ -133,7 +127,7 @@ namespace Echoesphere.Runtime.UI {
             return FadeIn();
         }
 
-        private Tween PlayFirstTimeAnimation() {
+        private Tween PlayAnimation() {
             var color = NoteColors[(int)noteType];
 
             return DOTween.Sequence()
