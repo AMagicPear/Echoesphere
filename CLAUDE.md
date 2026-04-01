@@ -11,6 +11,7 @@ Echoesphere (回声之境) is a Unity 6000.3.9f1 project - a multimodal immersiv
 - **Unity Version**: 6000.3.9f1
 - **Render Pipeline**: URP (Universal Render Pipeline)
 - **Input System**: Unity Input System (PlayerInput component)
+  - Action definitions in `Assets/InputSystem/InputSystem_Actions.inputactions` and `Player_Actions.inputactions`
 
 ## Build & Run
 
@@ -53,7 +54,20 @@ Tests run via Unity's Test Runner window (Window > General > Test Runner).
 ### Assembly Definitions
 
 - `Assets/Scripts/Echoesphere.Runtime.asmdef` - Runtime scripts
-- `Assets/Tests/Echoesphere.Tests.asmdef` - Test scripts
+- `Assets/Tests/Echoesphere.Tests.asmdef` - Editor tests (references Echoesphere.Runtime)
+
+### Vendor Assets
+
+Third-party assets in `Assets/Vendor/`:
+- `DavidJalbert/LowPolyPeople/` - Low-poly character models
+- `IL3DN/` - FPS controller and wind scripts
+- `Platformer_8_Underworld/` - Animation utilities (BlendShapeAnimator, OscillatePosition/Rotation/Scale)
+
+### Settings
+
+Render pipeline assets in `Assets/Settings/`:
+- `PC_RPAsset.asset` / `PC_Renderer.asset` - Desktop URP config
+- `Mobile_RPAsset.asset` / `Mobile_Renderer.asset` - Mobile URP config
 
 ### Script Organization
 
@@ -84,9 +98,7 @@ When receiving `request_screenshot` command, `AgentCommunicator` captures the sc
 
 ## Testing
 
-Unit tests use NUnit. Run tests via Unity's Test Runner or via command line using the test assemblies:
-- `Tests.csproj` - Editor tests
-- `TestsPlayMode.csproj` - Play mode tests
+Unit tests use NUnit. Run via Window > General > Test Runner in Unity. Single tests can be run from the Test Runner UI by right-clicking a test method.
 
 ## Shaders
 
