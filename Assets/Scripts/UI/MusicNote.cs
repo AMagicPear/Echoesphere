@@ -20,20 +20,39 @@ namespace Echoesphere.Runtime.UI {
         [SerializeField] private Image connectionLine;
 
         [Header("Animation Settings")]
-        [SerializeField] private float fadeDuration = 0.4f;
-        [SerializeField] private float connectionLineFadeDuration = 0.25f;
+        [SerializeField] private float fadeDuration = 1f;
+        [SerializeField] private float connectionLineFadeDuration = 0.6f;
 
         [Header("Play Animation")]
-        [SerializeField] private float playScaleDuration = 0.4f;
-        [SerializeField] private float playScale = 1.25f;
+        [Tooltip("演奏时颜色过渡时长")]
+        [SerializeField] private float playColorDuration = 0.5f;
+        [Tooltip("发光脉冲次数")]
+        [SerializeField] private int glowPulseCount = 2;
+        [Tooltip("发光脉冲时长")]
+        [SerializeField] private float glowPulseDuration = 0.2f;
+        [Tooltip("发光强度")]
+        [SerializeField] private float glowIntensity = 0.6f;
+
+        [Header("Acquire Animation")]
+        [Tooltip("获取时缩放持续时间")]
+        [SerializeField] private float acquireScaleDuration = 0.2f;
+        [Tooltip("获取时缩放大小")]
+        [SerializeField] private float acquireScale = 1.3f;
+
+        [Header("Audio")]
+        [Tooltip("获取提示音")]
+        [SerializeField] private AudioSource acquireSound;
 
         [Header("References (Auto-assigned)")]
         [SerializeField] private Image noteImage;
+        [Tooltip("演奏时的背景发光图像")]
+        [SerializeField] private Image glowImage;
 
         private Color _originalColor;
         private Tween _fadeTween;
         private Tween _connectionLineTween;
         private Tween _playTween;
+        private Tween _flashTween;
 
         private bool _isAcquired;
 
@@ -54,16 +73,18 @@ namespace Echoesphere.Runtime.UI {
             // 初始状态：隐藏
             if (noteImage != null) noteImage.DOFade(0f, 0f);
             if (connectionLine != null) connectionLine.DOFade(0f, 0f);
+            if (glowImage != null) glowImage.DOFade(0f, 0f);
         }
 
         private void OnDestroy() {
             _fadeTween.Kill();
             _connectionLineTween.Kill();
             _playTween.Kill();
+            _flashTween.Kill();
         }
 
         /// <summary>
-        /// 获得音符，播放渐现动画
+        /// 获得音符，播放渐现动画和缩放提示
         /// </summary>
         public void Acquire() {
             if (_isAcquired) return;
@@ -72,21 +93,31 @@ namespace Echoesphere.Runtime.UI {
             _fadeTween.Kill();
             _connectionLineTween.Kill();
 
+            // 播放获取音效
+            if (acquireSound != null) acquireSound.Play();
+
             switch (noteType) {
                 case NoteType.WaterDrop:
+                    // 水滴音符：缩放和渐显同时进行
+                    _flashTween = AcquireAnimation();
                     _fadeTween = FadeIn();
                     break;
 
                 case NoteType.Crossing:
                 case NoteType.Tide:
                 case NoteType.Breeze:
+                    // 其他音符：连接线先渐显，等音符可见时再缩放
                     _connectionLineTween = FadeInConnectionLine();
+                    // 延迟缩放动画，与音符渐显同步
+                    _flashTween = DOTween.Sequence()
+                        .AppendInterval(connectionLineFadeDuration)
+                        .AppendCallback(() => _flashTween = AcquireAnimation());
                     break;
             }
         }
 
         /// <summary>
-        /// 弹奏音符，播放缩放+变色动画
+        /// 弹奏音符，播放变色+发光动画
         /// </summary>
         public void Play() {
             if (!_isAcquired || _playTween != null) return;
@@ -102,12 +133,14 @@ namespace Echoesphere.Runtime.UI {
             _fadeTween.Kill();
             _connectionLineTween.Kill();
             _playTween.Kill();
+            _flashTween.Kill();
 
             if (noteImage != null) {
                 noteImage.DOFade(0f, 0f);
                 noteImage.color = _originalColor;
             }
             if (connectionLine != null) connectionLine.DOFade(0f, 0f);
+            if (glowImage != null) glowImage.DOFade(0f, 0f);
             transform.localScale = Vector3.one;
         }
 
@@ -127,15 +160,34 @@ namespace Echoesphere.Runtime.UI {
             return FadeIn();
         }
 
+        private Tween AcquireAnimation() {
+            return DOTween.Sequence()
+                .Append(transform.DOScale(acquireScale, acquireScaleDuration))
+                .Append(transform.DOScale(1f, acquireScaleDuration))
+                .Append(transform.DOScale(acquireScale, acquireScaleDuration))
+                .Append(transform.DOScale(1f, acquireScaleDuration));
+        }
+
         private Tween PlayAnimation() {
             var color = NoteColors[(int)noteType];
 
-            return DOTween.Sequence()
-                .Append(transform.DOScale(playScale, playScaleDuration * 0.4f).SetEase(Ease.OutQuad))
-                .Join(noteImage.DOColor(color, playScaleDuration * 0.2f))
-                .Append(transform.DOScale(1f, playScaleDuration * 0.6f).SetEase(Ease.OutElastic))
-                .Join(noteImage.DOColor(_originalColor, playScaleDuration * 0.3f))
-                .OnComplete(() => _playTween = null);
+            var sequence = DOTween.Sequence();
+
+            // 变色
+            sequence.Append(noteImage.DOColor(color, playColorDuration));
+
+            // 发光脉冲
+            if (glowImage != null) {
+                for (int i = 0; i < glowPulseCount; i++) {
+                    sequence.Append(glowImage.DOFade(glowIntensity, glowPulseDuration))
+                        .Append(glowImage.DOFade(0f, glowPulseDuration));
+                }
+            }
+
+            // 颜色恢复
+            sequence.Append(noteImage.DOColor(_originalColor, playColorDuration * 0.5f));
+
+            return sequence.OnComplete(() => _playTween = null);
         }
     }
 }
