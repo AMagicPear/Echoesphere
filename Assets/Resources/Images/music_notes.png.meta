@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_0"
+      name: note_waterdrop
       rect:
         serializedVersion: 2
         x: 0
@@ -119,7 +119,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_4"
+      name: note_tide
       rect:
         serializedVersion: 2
         x: 0
@@ -141,7 +141,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_7"
+      name: note_breeze
       rect:
         serializedVersion: 2
         x: 0
@@ -163,7 +163,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_1"
+      name: note_connection_line
       rect:
         serializedVersion: 2
         x: 0
@@ -185,7 +185,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_3"
+      name: note_crossing
       rect:
         serializedVersion: 2
         x: 0
@@ -222,14 +222,15 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":8.0},"gridSpriteSize":{"x":826.0,"y":830.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_0": 1661478756
-      "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_1": 1215924195
+      note_Anchorfall: 1661478756
+      note_breeze: -102226553
+      note_connection_line: 1215924195
+      note_crossing: -2066077442
+      note_tide: 1176457095
+      note_waterdrop: 1661478756
       "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_2": 1720860636
-      "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_3": -2066077442
-      "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_4": 1176457095
       "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_5": -577575442
       "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_6": 747455632
-      "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_7": -102226553
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

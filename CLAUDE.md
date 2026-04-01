@@ -19,6 +19,15 @@ Open the project in Unity Hub or via command line:
 open -a Unity
 ```
 
+Tests run via Unity's Test Runner window (Window > General > Test Runner).
+
+## Key Scenes
+
+- `Assets/Scenes/TheGrass.unity` - Main grass field scene
+- `Assets/Scenes/PuzzleAvatar.unity` - Avatar rotation puzzle
+- `Assets/Scenes/PuzzleRolling.unity` - Rolling puzzle
+- `Assets/Scenes/SaveTest.unity` - Save system test scene
+
 ## Architecture
 
 ### Core Components

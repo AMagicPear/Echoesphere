@@ -2,7 +2,8 @@
     "name": "Echoesphere.Runtime",
     "rootNamespace": "Echoesphere.Runtime",
     "references": [
-        "GUID:75469ad4d38634e559750d17036d5f7c"
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:42e7512452cf237408e02a85e0be8899"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
