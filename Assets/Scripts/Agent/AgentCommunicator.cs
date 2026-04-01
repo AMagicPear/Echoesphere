@@ -46,6 +46,7 @@ namespace Echoesphere.Runtime.Agent {
             } catch (Exception ex) {
                 Debug.LogError($"[客户端] 连接失败: {ex.Message}");
                 _mainThreadContext.Post(_ => OnConnectionStatusChanged?.Invoke(false), null);
+                gameObject.SetActive(false);
             }
         }
 
