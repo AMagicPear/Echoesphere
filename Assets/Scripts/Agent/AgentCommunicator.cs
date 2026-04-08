@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -14,7 +13,7 @@ namespace Echoesphere.Runtime.Agent {
         [Header("服务器端口")] public int port = 65432;
 
         public event Action<string> OnMessageReceived;
-        public event Action<byte[]> OnImageReceived;
+        public event Action<string> OnImageReceived;
         public event Action<bool> OnConnectionStatusChanged;
 
         private TcpClient _tcpClient;
@@ -38,7 +37,6 @@ namespace Echoesphere.Runtime.Agent {
                 _isConnected = true;
                 Debug.Log($"[客户端] 已连接至 {host}:{port}");
 
-                // 发送注册消息
                 await SendRegister();
 
                 _mainThreadContext.Post(_ => OnConnectionStatusChanged?.Invoke(true), null);
@@ -56,7 +54,7 @@ namespace Echoesphere.Runtime.Agent {
                 client_type = "unity"
             };
             await SendJson(registerMsg);
-            Debug.Log($"[客户端] 已发送注册消息: {JsonUtility.ToJson(registerMsg)}");
+            Debug.Log($"[客户端] 已发送注册消息");
         }
 
         private async Task ReceiveLoopAsync() {
@@ -95,22 +93,18 @@ namespace Echoesphere.Runtime.Agent {
                             break;
                         case "image":
                             if (!string.IsNullOrEmpty(msg.data)) {
-                                try {
-                                    byte[] imageBytes = Convert.FromBase64String(msg.data);
-                                    Debug.Log($"[收到] 图像，大小={imageBytes.Length}字节");
-                                    _mainThreadContext.Post(_ => OnImageReceived?.Invoke(imageBytes), null);
-                                } catch (Exception ex) {
-                                    Debug.LogError($"[收到] Base64解码图像失败: {ex.Message}");
-                                }
+                                Debug.Log($"[收到图片] request_id={msg.request_id}, data长度={msg.data.Length}");
+                                _mainThreadContext.Post(_ => OnImageReceived?.Invoke(msg.data), null);
                             }
                             break;
                         case "command":
-                            _mainThreadContext.Post(_ => OnMessageReceived?.Invoke(msg.data ?? jsonStr), null);
-                            break;
-                        case "request":
-                            if (msg.cmd == "request_screenshot") {
-                                StartCoroutine(SendScreenshot(msg.request_id));
+                            Debug.Log($"[收到命令] {msg.data}, request_id={msg.request_id}");
+                            if (msg.data == "request_screenshot" && !string.IsNullOrEmpty(msg.request_id)) {
+                                _ = SendScreenshot(msg.request_id);
                             }
+                            break;
+                        case "register":
+                            Debug.Log($"[收到注册] client_type={msg.client_type}");
                             break;
                         default:
                             Debug.LogWarning($"[收到] 未知消息类型: {msg.type}");
@@ -141,6 +135,9 @@ namespace Echoesphere.Runtime.Agent {
                 await _stream.WriteAsync(data, 0, data.Length, _cts.Token);
                 Debug.Log($"[发送] 长度={data.Length}");
             }
+            catch (Exception ex) {
+                Debug.LogError($"[发送错误] {ex.Message}");
+            }
             finally {
                 _sendLock.Release();
             }
@@ -151,52 +148,35 @@ namespace Echoesphere.Runtime.Agent {
             return SendJson(msg);
         }
 
-        public Task SendImage(byte[] imageBytes) {
-            var msg = new JsonMessage { type = "image", data = Convert.ToBase64String(imageBytes) };
+        public Task SendImage(string base64Image, string requestId = null) {
+            var msg = new JsonMessage {
+                type = "image",
+                data = base64Image,
+                request_id = requestId
+            };
             return SendJson(msg);
         }
 
-        public Task SendCommand(string commandJson) {
-            var msg = JsonUtility.FromJson<JsonMessage>(commandJson);
-            if (msg != null) {
-                msg.type = "command";
-                return SendJson(msg);
-            }
-            var fallback = new JsonMessage { type = "command", data = commandJson };
-            return SendJson(fallback);
+        public Task SendCommand(string command, string requestId) {
+            var msg = new JsonMessage {
+                type = "command",
+                data = command,
+                request_id = requestId
+            };
+            return SendJson(msg);
         }
 
-        /// <summary> 发送截图，可选带上 request_id 作为响应 </summary>
-        public IEnumerator SendScreenshot(string requestId = null) {
-            yield return new WaitForEndOfFrame();
-
-            int width = Screen.width;
-            int height = Screen.height;
-            var tex = new Texture2D(width, height, TextureFormat.RGB24, false);
-            tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-            tex.Apply();
-
-            byte[] jpgBytes = tex.EncodeToJPG(75);
-            Destroy(tex);
-
-            Task sendTask;
-            if (!string.IsNullOrEmpty(requestId)) {
-                var msg = new JsonMessage {
-                    type = "response",
-                    request_id = requestId,
-                    data = Convert.ToBase64String(jpgBytes)
-                };
-                sendTask = SendJson(msg);
-                Debug.Log($"[截图响应] request_id={requestId}");
-            } else {
-                sendTask = SendImage(jpgBytes);
-                Debug.Log("[截图] 发送完成");
+        /// <summary> 发送截图，携带 request_id 响应截图请求 </summary>
+        public async Task SendScreenshot(string requestId) {
+            await Task.Delay(1);
+            var screenshot = ScreenCapture.CaptureScreenshotAsTexture();
+            var base64Image = Convert.ToBase64String(screenshot.EncodeToJPG());
+            try {
+                await SendImage(base64Image, requestId);
+                Debug.Log($"[截图] 发送完成, request_id={requestId}, base64长度={base64Image.Length}");
+            } catch (Exception ex) {
+                Debug.LogError($"[截图异常] {ex.Message}");
             }
-
-            yield return new WaitUntil(() => sendTask.IsCompleted);
-
-            if (sendTask.Exception != null)
-                Debug.LogError($"[截图异常] {sendTask.Exception}");
         }
 
         private void Disconnect() {
@@ -218,11 +198,10 @@ namespace Echoesphere.Runtime.Agent {
         // 统一JSON消息结构
         [Serializable]
         private class JsonMessage {
-            public string type;          // text | image | command | register | request | response
-            public string data;          // 文本内容或base64编码数据
-            public string client_type;  // register 时使用
-            public string request_id;    // request/response 时使用
-            public string cmd;           // request 时使用
+            public string type;       // text, image, command, register
+            public string data;       // 文本内容或base64编码数据
+            public string client_type; // 发送者身份: echoagent, unity, mediapipe, raspberry_pi
+            public string request_id;  // 请求标识UUID
         }
     }
 }
