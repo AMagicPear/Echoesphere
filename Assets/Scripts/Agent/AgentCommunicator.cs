@@ -52,7 +52,8 @@ namespace Echoesphere.Runtime.Agent {
         private async Task SendRegister() {
             var registerMsg = new JsonMessage {
                 type = "register",
-                client_type = "unity"
+                client_type = "unity",
+                data = "这是来自Unity客户端的注册消息"
             };
             await SendJson(registerMsg);
             Debug.Log($"[客户端] 已发送注册消息");
