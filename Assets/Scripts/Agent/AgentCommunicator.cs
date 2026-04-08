@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -100,7 +101,7 @@ namespace Echoesphere.Runtime.Agent {
                         case "command":
                             Debug.Log($"[收到命令] {msg.data}, request_id={msg.request_id}");
                             if (msg.data == "request_screenshot" && !string.IsNullOrEmpty(msg.request_id)) {
-                                _ = SendScreenshot(msg.request_id);
+                                StartCoroutine(SendScreenshot(msg.request_id));
                             }
                             break;
                         case "register":
@@ -167,15 +168,16 @@ namespace Echoesphere.Runtime.Agent {
         }
 
         /// <summary> 发送截图，携带 request_id 响应截图请求 </summary>
-        public async Task SendScreenshot(string requestId) {
-            await Task.Delay(1);
+        public IEnumerator SendScreenshot(string requestId) {
+            yield return new WaitForEndOfFrame();
             var screenshot = ScreenCapture.CaptureScreenshotAsTexture();
             var base64Image = Convert.ToBase64String(screenshot.EncodeToJPG());
-            try {
-                await SendImage(base64Image, requestId);
+            var sendTask = SendImage(base64Image, requestId);
+            yield return new WaitUntil(() => sendTask.IsCompleted);
+            if (sendTask.Exception != null) {
+                Debug.LogError($"[截图异常] {sendTask.Exception}");
+            } else {
                 Debug.Log($"[截图] 发送完成, request_id={requestId}, base64长度={base64Image.Length}");
-            } catch (Exception ex) {
-                Debug.LogError($"[截图异常] {ex.Message}");
             }
         }
 
