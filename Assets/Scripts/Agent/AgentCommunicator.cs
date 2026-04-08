@@ -14,7 +14,7 @@ namespace Echoesphere.Runtime.Agent {
         [Header("服务器端口")] public int port = 65432;
 
         public event Action<string> OnMessageReceived;
-        public event Action<byte[]> OnImageReceived;
+        public event Action<string> OnImageReceived;
         public event Action<bool> OnConnectionStatusChanged;
 
         private TcpClient _tcpClient;
@@ -51,13 +51,12 @@ namespace Echoesphere.Runtime.Agent {
         }
 
         private async Task SendRegister() {
-            var registerMsg = new RegisterMessage {
+            var registerMsg = new JsonMessage {
                 type = "register",
                 client_type = "unity"
             };
-            string json = JsonUtility.ToJson(registerMsg);
-            await SendText(json);
-            Debug.Log($"[客户端] 已发送注册消息: {json}");
+            await SendJson(registerMsg);
+            Debug.Log($"[客户端] 已发送注册消息");
         }
 
         private async Task ReceiveLoopAsync() {
@@ -73,43 +72,47 @@ namespace Echoesphere.Runtime.Agent {
 
                     int totalLength = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(lengthBuffer, 0));
 
-                    var typeAndData = new byte[totalLength];
+                    var jsonBytes = new byte[totalLength];
                     bytesRead = 0;
                     while (bytesRead < totalLength) {
-                        int read = await _stream.ReadAsync(typeAndData, bytesRead, totalLength - bytesRead, _cts.Token);
+                        int read = await _stream.ReadAsync(jsonBytes, bytesRead, totalLength - bytesRead, _cts.Token);
                         if (read == 0) throw new Exception("连接关闭");
                         bytesRead += read;
                     }
 
-                    MessageType msgType = (MessageType)typeAndData[0];
-                    var payload = new byte[totalLength - 1];
-                    Array.Copy(typeAndData, 1, payload, 0, totalLength - 1);
+                    string jsonString = Encoding.UTF8.GetString(jsonBytes);
+                    Debug.Log($"[收到] {jsonString}");
 
-                    switch (msgType) {
-                        case MessageType.Text:
-                            string message = Encoding.UTF8.GetString(payload);
-                            Debug.Log($"[收到] {message}");
-                            _mainThreadContext.Post(_ => OnMessageReceived?.Invoke(message), null);
-                            break;
-                        case MessageType.Image:
-                            Debug.Log($"[收到] 图像，大小={payload.Length}字节");
-                            _mainThreadContext.Post(_ => OnImageReceived?.Invoke(payload), null);
-                            break;
-                        case MessageType.Command:
-                            string cmdJson = Encoding.UTF8.GetString(payload);
-                            Debug.Log($"[收到命令] {cmdJson}");
-                            _mainThreadContext.Post(_ => OnMessageReceived?.Invoke(cmdJson), null);
-                            break;
-                        case MessageType.Request:
-                            string reqJson = Encoding.UTF8.GetString(payload);
-                            Debug.Log($"[收到请求] {reqJson}");
-                            var req = JsonUtility.FromJson<RequestMessage>(reqJson);
-                            if (req != null && req.cmd == "request_screenshot") {
-                                StartCoroutine(SendScreenshotWithRequestId(req.request_id));
+                    var msg = JsonUtility.FromJson<JsonMessage>(jsonString);
+                    if (msg == null) {
+                        Debug.LogWarning("[解析] 无法解析消息");
+                        continue;
+                    }
+
+                    switch (msg.type) {
+                        case "text":
+                            if (!string.IsNullOrEmpty(msg.request_id)) {
+                                Debug.Log($"[收到文本响应] request_id={msg.request_id}, data={msg.data}");
+                            } else {
+                                Debug.Log($"[收到文本] {msg.data}");
+                                _mainThreadContext.Post(_ => OnMessageReceived?.Invoke(msg.data), null);
                             }
                             break;
+                        case "image":
+                            Debug.Log($"[收到图片] request_id={msg.request_id}, data长度={msg.data?.Length ?? 0}");
+                            _mainThreadContext.Post(_ => OnImageReceived?.Invoke(msg.data), null);
+                            break;
+                        case "command":
+                            Debug.Log($"[收到命令] {msg.data}, request_id={msg.request_id}");
+                            if (msg.data == "request_screenshot" && !string.IsNullOrEmpty(msg.request_id)) {
+                                _ = SendScreenshot(msg.request_id);
+                            }
+                            break;
+                        case "register":
+                            Debug.Log($"[收到注册] client_type={msg.client_type}");
+                            break;
                         default:
-                            Debug.LogWarning($"[未知] 消息类型 {(byte)msgType}");
+                            Debug.LogWarning($"[未知] 消息类型 {msg.type}");
                             break;
                     }
                 }
@@ -121,78 +124,62 @@ namespace Echoesphere.Runtime.Agent {
             }
         }
 
-        private async Task SendAsync(MessageType type, byte[] data) {
+        private async Task SendJson(JsonMessage msg) {
             if (!_isConnected || _stream == null) return;
             await _sendLock.WaitAsync(_cts.Token);
             try {
-                var lengthPrefix = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(1 + data.Length));
+                string jsonString = JsonUtility.ToJson(msg);
+                byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonString);
+                var lengthPrefix = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(jsonBytes.Length));
                 await _stream.WriteAsync(lengthPrefix, 0, 4, _cts.Token);
-                await _stream.WriteAsync(new[] { (byte)type }, 0, 1, _cts.Token);
-                await _stream.WriteAsync(data, 0, data.Length, _cts.Token);
-                Debug.Log($"[发送] 类型={type}, 长度={data.Length}");
+                await _stream.WriteAsync(jsonBytes, 0, jsonBytes.Length, _cts.Token);
+                Debug.Log($"[发送] {jsonString}");
+            }
+            catch (Exception ex) {
+                Debug.LogError($"[发送错误] {ex.Message}");
             }
             finally {
                 _sendLock.Release();
             }
         }
 
-        public Task SendText(string message) => SendAsync(MessageType.Text, Encoding.UTF8.GetBytes(message));
-
-        public Task SendImage(byte[] imageBytes) => SendAsync(MessageType.Image, imageBytes);
-
-        public Task SendCommand(string commandJson) => SendAsync(MessageType.Command, Encoding.UTF8.GetBytes(commandJson));
-
-        /// <summary> 发送截图 </summary>
-        public IEnumerator SendScreenshot() {
-            yield return new WaitForEndOfFrame();
-
-            int width = Screen.width;
-            int height = Screen.height;
-            var tex = new Texture2D(width, height, TextureFormat.RGB24, false);
-            tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-            tex.Apply();
-
-            byte[] jpgBytes = tex.EncodeToJPG(75);
-            Destroy(tex);
-
-            var sendTask = SendImage(jpgBytes);
-            yield return new WaitUntil(() => sendTask.IsCompleted);
-
-            if (sendTask.Exception != null)
-                Debug.LogError($"[截图发送异常] {sendTask.Exception}");
-            else
-                Debug.Log("[截图] 发送完成");
+        public Task SendText(string message) {
+            var msg = new JsonMessage {
+                type = "text",
+                data = message
+            };
+            return SendJson(msg);
         }
 
-        /// <summary> 发送带 request_id 的截图响应 </summary>
-        private IEnumerator SendScreenshotWithRequestId(string requestId) {
-            yield return new WaitForEndOfFrame();
+        public Task SendImage(string base64Image, string requestId = null) {
+            var msg = new JsonMessage {
+                type = "image",
+                data = base64Image,
+                request_id = requestId
+            };
+            return SendJson(msg);
+        }
 
-            int width = Screen.width;
-            int height = Screen.height;
-            var tex = new Texture2D(width, height, TextureFormat.RGB24, false);
-            tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-            tex.Apply();
+        public Task SendCommand(string command, string requestId) {
+            var msg = new JsonMessage {
+                type = "command",
+                data = command,
+                request_id = requestId
+            };
+            return SendJson(msg);
+        }
 
-            byte[] jpgBytes = tex.EncodeToJPG(75);
-            Destroy(tex);
-
-            // 构造 RESPONSE 消息: JSON元数据 + '\n' + 原始图片字节
-            var meta = new ResponseMeta { request_id = requestId };
-            string metaJson = JsonUtility.ToJson(meta);
-            byte[] metaBytes = Encoding.UTF8.GetBytes(metaJson);
-            byte[] payload = new byte[metaBytes.Length + 1 + jpgBytes.Length];
-            Array.Copy(metaBytes, 0, payload, 0, metaBytes.Length);
-            payload[metaBytes.Length] = (byte)'\n';
-            Array.Copy(jpgBytes, 0, payload, metaBytes.Length + 1, jpgBytes.Length);
-
-            var sendTask = SendAsync(MessageType.Response, payload);
-            yield return new WaitUntil(() => sendTask.IsCompleted);
-
-            if (sendTask.Exception != null)
-                Debug.LogError($"[截图响应异常] {sendTask.Exception}");
-            else
-                Debug.Log($"[截图响应] 发送完成, request_id={requestId}");
+        /// <summary> 发送截图，携带 request_id 响应截图请求 </summary>
+        public async Task SendScreenshot(string requestId) {
+            await Task.Delay(1); // 等待当前帧结束，确保 ScreenCapture 能获取正确画面
+            var screenshot = ScreenCapture.CaptureScreenshotAsTexture();
+            var base64Image = Convert.ToBase64String(screenshot.EncodeToJPG());
+            try {
+                await SendImage(base64Image, requestId);
+                Debug.Log($"[截图] 发送完成, request_id={requestId}, base64长度={base64Image.Length}");
+            } catch (Exception ex) {
+                Debug.LogError($"[截图异常] {ex.Message}");
+            }
         }
 
         private void Disconnect() {
@@ -211,35 +198,13 @@ namespace Echoesphere.Runtime.Agent {
             _sendLock?.Dispose();
         }
 
-        // 消息类型枚举
-        private enum MessageType : byte {
-            Text = 0x00,
-            Image = 0x01,
-            Command = 0x02,
-            Register = 0x03,
-            Request = 0x04,
-            Response = 0x05
-        }
-
-        // 注册消息结构
+        // 统一JSON消息结构
         [Serializable]
-        private class RegisterMessage {
-            public string type;
-            public string client_type;
-        }
-
-        // 请求消息结构
-        [Serializable]
-        private class RequestMessage {
-            public string request_id;
-            public string cmd;
-            public string source;
-        }
-
-        // 响应元数据结构
-        [Serializable]
-        private class ResponseMeta {
-            public string request_id;
+        private class JsonMessage {
+            public string type;       // text, image, command, register
+            public string data;       // 文本内容或base64编码数据
+            public string client_type; // 发送者身份: echoagent, unity, mediapipe, raspberry_pi
+            public string request_id;  // 请求标识UUID
         }
     }
 }

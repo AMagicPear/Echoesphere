@@ -17,7 +17,7 @@ namespace Echoesphere.Runtime.Stuff {
         private void OnTriggerEnter(Collider other) {
             if (!other.CompareTag("Player")) return;
             _ = Communicator.SendText($"HitBlockColor: {hitNote}");
-            StartCoroutine(Communicator.SendScreenshot());
+            // StartCoroutine(Communicator.SendScreenshot());
         }
     }
     
