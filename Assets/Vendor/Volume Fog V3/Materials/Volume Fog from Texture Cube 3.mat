@@ -98,8 +98,8 @@ Material:
     - _BUILTIN_QueueOffset: 0
     - _Blend: 0
     - _Boolean: 0
-    - _BoundsFade: 2.37
-    - _BoundsFadeRange: 8.92
+    - _BoundsFade: 16.44
+    - _BoundsFadeRange: 8.29
     - _CastShadows: 1
     - _Cull: 1
     - _DstBlend: 10
@@ -115,7 +115,7 @@ Material:
     - _SHADOW_ENABLED_EDITOR_ONLY: 1
     - _Samples: 60
     - _ShadowAdd: -0.34
-    - _ShadowMulti: 1
+    - _ShadowMulti: 4
     - _Shadow_Add: -0.3
     - _Shadow_Multi: 3.52
     - _Size: 22.56
@@ -134,7 +134,7 @@ Material:
     - t1: 0.48
     - t2: 0.5
     m_Colors:
-    - Color_69AD1AD: {r: 0.9894314, g: 1, b: 0.48742133, a: 0}
+    - Color_69AD1AD: {r: 1, g: 1, b: 1, a: 0}
     - Vector3_478B0511: {r: -8.43, g: 0.53, b: 2, a: 0}
     - Vector4_52CE31FB: {r: 0, g: 0, b: 0, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
