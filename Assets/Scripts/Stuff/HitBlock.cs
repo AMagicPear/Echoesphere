@@ -12,7 +12,7 @@ namespace Echoesphere.Runtime.Stuff {
 
     public class HitBlock : MonoBehaviour {
         [SerializeField] private HitNote hitNote;
-        private static AgentCommunicator Communicator => GameRoot.Instance.rasPiCommunicator;
+        private static AgentCommunicator Communicator => GameRoot.Instance.agentCommunicator;
 
         private void OnTriggerEnter(Collider other) {
             if (!other.CompareTag("Player")) return;

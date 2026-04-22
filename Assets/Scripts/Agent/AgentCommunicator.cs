@@ -9,12 +9,22 @@ using UnityEngine;
 
 
 namespace Echoesphere.Runtime.Agent {
+    // 统一JSON消息结构
+    [Serializable]
+    public class JsonMessage {
+        public string type;       // text, image, command, register
+        public string data;       // 文本内容或base64编码数据
+        public string client_type; // 发送者身份: echoagent, unity, mediapipe, raspberry_pi
+        public string request_id;  // 请求标识UUID
+    }
+    
     public class AgentCommunicator : MonoBehaviour {
         [Header("服务器设置")] public string host = "127.0.0.1";
         [Header("服务器端口")] public int port = 65432;
 
         public event Action<string> OnMessageReceived;
         public event Action<string> OnImageReceived;
+        public event Action<JsonMessage> OnCommandReceived;
         public event Action<bool> OnConnectionStatusChanged;
 
         private TcpClient _tcpClient;
@@ -30,6 +40,20 @@ namespace Echoesphere.Runtime.Agent {
             _ = ConnectAsync();
         }
 
+        private void OnEnable() {
+            OnCommandReceived += HandleCommandReceived;
+        }
+
+        private void OnDisable() {
+            OnCommandReceived -= HandleCommandReceived;
+        }
+
+        private void HandleCommandReceived(JsonMessage msg) {
+            if (msg.data == "request_screenshot" && !string.IsNullOrEmpty(msg.request_id)) {
+                StartCoroutine(SendScreenshot(msg.request_id));
+            }
+        }
+
         private async Task ConnectAsync() {
             try {
                 _tcpClient = new TcpClient();
@@ -42,7 +66,8 @@ namespace Echoesphere.Runtime.Agent {
 
                 _mainThreadContext.Post(_ => OnConnectionStatusChanged?.Invoke(true), null);
                 _ = ReceiveLoopAsync();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 Debug.LogError($"[客户端] 连接失败: {ex.Message}");
                 _mainThreadContext.Post(_ => OnConnectionStatusChanged?.Invoke(false), null);
                 gameObject.SetActive(false);
@@ -101,9 +126,7 @@ namespace Echoesphere.Runtime.Agent {
                             break;
                         case "command":
                             Debug.Log($"[收到命令] {msg.data}, request_id={msg.request_id}");
-                            if (msg.data == "request_screenshot" && !string.IsNullOrEmpty(msg.request_id)) {
-                                StartCoroutine(SendScreenshot(msg.request_id));
-                            }
+                            _mainThreadContext.Post(_ => OnCommandReceived?.Invoke(msg), null);
                             break;
                         case "register":
                             Debug.Log($"[收到注册] client_type={msg.client_type}");
@@ -113,7 +136,8 @@ namespace Echoesphere.Runtime.Agent {
                             break;
                     }
                 }
-            } catch (Exception ex) when (_isConnected) {
+            }
+            catch (Exception ex) when (_isConnected) {
                 Debug.LogError($"[接收错误] {ex.Message}");
             }
             finally {
@@ -177,7 +201,8 @@ namespace Echoesphere.Runtime.Agent {
             yield return new WaitUntil(() => sendTask.IsCompleted);
             if (sendTask.Exception != null) {
                 Debug.LogError($"[截图异常] {sendTask.Exception}");
-            } else {
+            }
+            else {
                 Debug.Log($"[截图] 发送完成, request_id={requestId}, base64长度={base64Image.Length}");
             }
         }
@@ -196,15 +221,6 @@ namespace Echoesphere.Runtime.Agent {
             _stream?.Dispose();
             _tcpClient?.Close();
             _sendLock?.Dispose();
-        }
-
-        // 统一JSON消息结构
-        [Serializable]
-        private class JsonMessage {
-            public string type;       // text, image, command, register
-            public string data;       // 文本内容或base64编码数据
-            public string client_type; // 发送者身份: echoagent, unity, mediapipe, raspberry_pi
-            public string request_id;  // 请求标识UUID
         }
     }
 }

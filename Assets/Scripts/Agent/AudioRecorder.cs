@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace Echoesphere.Runtime.RaspberryPi {
+namespace Echoesphere.Runtime.Agent {
     /// <summary>
     /// 录制当前游戏音频并通过 OnAudioFilterRead 获取字节数据
     /// 使用方法：将本脚本挂载到带有 AudioListener 的游戏对象上

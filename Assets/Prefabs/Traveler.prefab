@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 141fa7a27aedb41479918245645635b7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.57
+      value: 1.222
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 141fa7a27aedb41479918245645635b7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -100,6 +100,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 141fa7a27aedb41479918245645635b7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7565324812378123367}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 141fa7a27aedb41479918245645635b7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5027378890327617027}
   m_SourcePrefab: {fileID: 100100000, guid: 141fa7a27aedb41479918245645635b7, type: 3}
 --- !u!1 &236456096599914154 stripped
 GameObject:
@@ -221,3 +224,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Echoesphere.Runtime::Echoesphere.Runtime.RaspberryPi.AudioRecorder
   recordDuration: 100
   channels: 1
+--- !u!114 &5027378890327617027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236456096599914154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a82520eb6f5213241b0aa736cc90c6a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Echoesphere.Runtime::Echoesphere.Runtime.Traveler.InteractionDetector

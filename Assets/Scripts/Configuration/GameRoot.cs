@@ -7,7 +7,7 @@ namespace Echoesphere.Runtime.Configuration {
 
         [Header("Managers")]
         public SaveManager saveManager;
-        public Agent.AgentCommunicator rasPiCommunicator;
+        public Agent.AgentCommunicator agentCommunicator;
         public MusicNoteController musicNoteController;
 
         private void Awake() {
