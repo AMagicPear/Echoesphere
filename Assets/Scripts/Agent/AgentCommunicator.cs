@@ -41,15 +41,15 @@ namespace Echoesphere.Runtime.Agent {
         }
 
         private void OnEnable() {
-            OnCommandReceived += HandleCommandReceived;
+            OnCommandReceived += HandleScreenshot;
         }
 
         private void OnDisable() {
-            OnCommandReceived -= HandleCommandReceived;
+            OnCommandReceived -= HandleScreenshot;
         }
 
-        private void HandleCommandReceived(JsonMessage msg) {
-            if (msg.data == "request_screenshot" && !string.IsNullOrEmpty(msg.request_id)) {
+        private void HandleScreenshot(JsonMessage msg) {
+            if (msg.data == "request:screenshot" && !string.IsNullOrEmpty(msg.request_id)) {
                 StartCoroutine(SendScreenshot(msg.request_id));
             }
         }
@@ -127,9 +127,6 @@ namespace Echoesphere.Runtime.Agent {
                         case "command":
                             Debug.Log($"[收到命令] {msg.data}, request_id={msg.request_id}");
                             _mainThreadContext.Post(_ => OnCommandReceived?.Invoke(msg), null);
-                            break;
-                        case "register":
-                            Debug.Log($"[收到注册] client_type={msg.client_type}");
                             break;
                         default:
                             Debug.LogWarning($"[收到] 未知消息类型: {msg.type}");

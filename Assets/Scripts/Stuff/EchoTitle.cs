@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Echoesphere.Runtime.Stuff {
     public class EchoTitle : MonoBehaviour {
+        [Header("Input Settings")]
+        [SerializeField] private InputActionReference projectWideInput;
         [Header("Echo Title")]
         [Range(0f, 0.1f)] public float positionStrength = 0.005f;
         [Range(0f, 10f)] public float positionSpeed = 1f;
@@ -12,6 +15,22 @@ namespace Echoesphere.Runtime.Stuff {
         private Vector3[] _basePositions;
         private Quaternion[] _baseRotations;
         private Vector3[] _noiseOffsets;
+
+        void OnEnable() {
+            if (projectWideInput != null) {
+                projectWideInput.action.performed += OnSubmitPerformed;
+            }
+        }
+
+        void OnDisable() {
+            if (projectWideInput != null) {
+                projectWideInput.action.performed -= OnSubmitPerformed;
+            }
+        }
+
+        private void OnSubmitPerformed(InputAction.CallbackContext context) {
+            Debug.Log($"[Interaction] 检测到提交键按下 (设备: {context.control.device.name})");
+        }
 
         private void Start() {
             int childCount = transform.childCount;
