@@ -19,7 +19,7 @@
                     "name": "Submit",
                     "type": "Button",
                     "id": "61df563a-1e26-4fb6-aebc-9313d00c87ed",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -375,6 +375,17 @@
                 },
                 {
                     "name": "",
+                    "id": "94762c9a-3873-4564-8358-03c0c21303dc",
+                    "path": "<VirtualAgentDevice>/submit",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
+                    "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "a6a5aca1-554f-4e8d-8abe-c8b4e4732ab5",
                     "path": "*/{Cancel}",
                     "interactions": "",
@@ -527,7 +538,7 @@
                     "type": "Value",
                     "id": "351f2ccd-1f9f-44bf-9bec-d62ac5c5f408",
                     "expectedControlType": "Vector2",
-                    "processors": "",
+                    "processors": "NormalizeVector2",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -670,6 +681,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3594da4b-4c0b-45cf-98a8-bddfe10e3ed7",
+                    "path": "<VirtualAgentDevice>/move",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false

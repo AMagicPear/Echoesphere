@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 38dd7421c6ab4457db2211d399564319, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 16.47
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 38dd7421c6ab4457db2211d399564319, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.15
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 38dd7421c6ab4457db2211d399564319, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 55.44
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 38dd7421c6ab4457db2211d399564319, type: 3}
       propertyPath: m_LocalRotation.w
@@ -77,6 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc3a1e3cfba5425991744c81767e64d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Echoesphere.Runtime::Echoesphere.Runtime.Stuff.EchoTitle
+  projectWideInput: {fileID: 4943625989121452962, guid: 1913b5514a45f4276a3d01423cbea1fe, type: 3}
   positionStrength: 0.06
   positionSpeed: 0.51
   rotationStrength: 0.5

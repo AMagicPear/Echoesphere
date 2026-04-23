@@ -2,9 +2,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Echoesphere.Runtime.Traveler {
-    [RequireComponent(typeof(PlayerInput))]
+    // [RequireComponent(typeof(PlayerInput))]
     [RequireComponent(typeof(CharacterController))]
     public class TravelerController : MonoBehaviour {
+        [SerializeField] private InputActionReference _moveActionRef;
         private static readonly int Speed = Animator.StringToHash("speed");
         public float moveSpeed = 2.0f;
         public Vector2 moveInput;
@@ -16,11 +17,6 @@ namespace Echoesphere.Runtime.Traveler {
         private float _targetRotation;
         private float _rotationVelocity;
         private float _verticalVelocity;
-
-        /// 接收PlayerInput的输入
-        public void OnMove(InputValue value) {
-            moveInput = value.Get<Vector2>();
-        }
 
         private void Awake() {
             if (_mainCamera == null) {
@@ -39,6 +35,7 @@ namespace Echoesphere.Runtime.Traveler {
         }
 
         private void Move() {
+            moveInput = _moveActionRef.action.ReadValue<Vector2>();
             Vector3 inputDirection = new Vector3(moveInput.x, 0.0f, moveInput.y).normalized;
             if (moveInput != Vector2.zero) {
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +

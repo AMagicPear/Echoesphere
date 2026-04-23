@@ -559,6 +559,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 682456808213709260, guid: 42ee0ece0ab6149c881d5a0410e11df3, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 838021537}
+    - target: {fileID: 682456808213709260, guid: 42ee0ece0ab6149c881d5a0410e11df3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 882542829935451901, guid: 42ee0ece0ab6149c881d5a0410e11df3, type: 3}
+      propertyPath: _moveActionRef
+      value: 
+      objectReference: {fileID: -1680190386980627800, guid: 1913b5514a45f4276a3d01423cbea1fe, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -972,8 +984,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Managers.GameRoot
   saveManager: {fileID: 944864300}
-  agentCommunicator: {fileID: 0}
+  agentCommunicator: {fileID: 1090483122}
   musicNoteController: {fileID: 1981866994}
+  echoEventCenter: {fileID: 1187794872}
 --- !u!4 &651547145
 Transform:
   m_ObjectHideFlags: 0
@@ -1838,6 +1851,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: Echoesphere.Runtime::RaspberryPi.RaspberryPiCommunicator
   host: 127.0.0.1
   port: 65432
+--- !u!1 &1187794870
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1187794871}
+  - component: {fileID: 1187794872}
+  m_Layer: 0
+  m_Name: EchoGameEvents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1187794871
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1187794870}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1452322818}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1187794872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1187794870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36b4b3e28fb23ff43b77e12074a97d85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Echoesphere.Runtime::Echoesphere.Runtime.Agent.EchoEventCenter
 --- !u!1 &1351693389
 GameObject:
   m_ObjectHideFlags: 0
@@ -2187,6 +2244,7 @@ Transform:
   m_Children:
   - {fileID: 944864301}
   - {fileID: 1090483121}
+  - {fileID: 1187794871}
   m_Father: {fileID: 651547145}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1510634860
@@ -3130,10 +3188,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2809322313614758188, guid: ddaa2241831334bec9209efeca0d3484, type: 3}
-      propertyPath: projectWideInput
-      value: 
-      objectReference: {fileID: 392368643174621059, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     - target: {fileID: 5913998851200449151, guid: ddaa2241831334bec9209efeca0d3484, type: 3}
       propertyPath: m_Name
       value: "\u56DE\u58F0\u4E4B\u5883\u6807\u9898"
