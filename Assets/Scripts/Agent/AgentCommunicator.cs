@@ -125,7 +125,7 @@ namespace Echoesphere.Runtime.Agent {
                             }
                             break;
                         case "command":
-                            Debug.Log($"[收到命令] {msg.data}, request_id={msg.request_id}");
+                            // Debug.Log($"[收到命令] {msg.data}, request_id={msg.request_id}");
                             _mainThreadContext.Post(_ => OnCommandReceived?.Invoke(msg), null);
                             break;
                         default:

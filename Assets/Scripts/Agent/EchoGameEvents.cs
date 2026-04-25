@@ -19,10 +19,12 @@ namespace Echoesphere.Runtime.Agent {
 
     public class EchoEventCenter : MonoBehaviour {
         private static readonly WaitForSeconds _waitForSeconds0_1 = new(0.1f);
+        private static readonly WaitForSeconds _waitForSeconds0_2 = new(0.2f);
 
         public event System.Action<GameInternalEvent> OnGameplayEvent;
         private VirtualAgentDevice _virtualDevice;
         private VirtualAgentState _currentState;
+        private float _lastMoveTime;
 
         void Awake() {
             _virtualDevice = InputSystem.AddDevice<VirtualAgentDevice>("VirtualAgent");
@@ -30,10 +32,22 @@ namespace Echoesphere.Runtime.Agent {
 
         void OnEnable() {
             GameRoot.Instance.agentCommunicator.OnCommandReceived += HandleNetWorkCommand;
+            StartCoroutine(CheckMoveTimeout());
         }
 
         void OnDisable() {
             GameRoot.Instance.agentCommunicator.OnCommandReceived -= HandleNetWorkCommand;
+            StopCoroutine(CheckMoveTimeout());
+        }
+
+        private IEnumerator CheckMoveTimeout() {
+            while (true) {
+                yield return _waitForSeconds0_2;
+                if (Time.time - _lastMoveTime > 0.3f && _currentState.move != Vector2.zero) {
+                    _currentState.move = Vector2.zero;
+                    InputSystem.QueueStateEvent(_virtualDevice, _currentState);
+                }
+            }
         }
 
         private void HandleNetWorkCommand(JsonMessage msg) {
@@ -62,8 +76,8 @@ namespace Echoesphere.Runtime.Agent {
                     float.TryParse(axis[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float y)) {
 
                     _currentState.move = new Vector2(x, y);
+                    _lastMoveTime = Time.time;
                     InputSystem.QueueStateEvent(_virtualDevice, _currentState);
-                    Debug.Log($"[EventCenter] 摇杆更新：X={x}, Y={y}");
                 }
             }
         }

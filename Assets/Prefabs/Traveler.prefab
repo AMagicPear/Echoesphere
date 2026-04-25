@@ -22,19 +22,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 141fa7a27aedb41479918245645635b7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.10979
+      value: -0.010482788
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 141fa7a27aedb41479918245645635b7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.222
+      value: -0.06300002
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 141fa7a27aedb41479918245645635b7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 55.67346
+      value: -0.11891556
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 141fa7a27aedb41479918245645635b7, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5967566
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 141fa7a27aedb41479918245645635b7, type: 3}
       propertyPath: m_LocalRotation.x
@@ -42,7 +42,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 141fa7a27aedb41479918245645635b7, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.80242234
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 141fa7a27aedb41479918245645635b7, type: 3}
       propertyPath: m_LocalRotation.z
@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 141fa7a27aedb41479918245645635b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 106.724
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 141fa7a27aedb41479918245645635b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -91,9 +91,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 141fa7a27aedb41479918245645635b7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5189570913956322070}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 141fa7a27aedb41479918245645635b7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 682456808213709260}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 141fa7a27aedb41479918245645635b7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 882542829935451901}
@@ -164,36 +161,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 236456096599914154}
   m_Enabled: 1
---- !u!114 &682456808213709260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 236456096599914154}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
-  m_Actions: {fileID: -944628639613478452, guid: 1913b5514a45f4276a3d01423cbea1fe, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &882542829935451901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,6 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 192fff5ecc2d42f2b56e1e08e1dbf62c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Echoesphere.Runtime::TravelerController
+  _moveActionRef: {fileID: -1680190386980627800, guid: 1913b5514a45f4276a3d01423cbea1fe, type: 3}
   moveSpeed: 2
   moveInput: {x: 0, y: 0}
   rotationSmoothTime: 0.12
@@ -217,7 +185,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 236456096599914154}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79018ca2f9fa84480b6d3bb2d2a0ec9e, type: 3}
   m_Name: 
