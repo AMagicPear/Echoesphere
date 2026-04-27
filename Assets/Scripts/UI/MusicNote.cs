@@ -103,8 +103,8 @@ namespace Echoesphere.Runtime.UI {
 
             // 向 raspberry_pi 发送 gain_note 命令
             if (GameRoot.Instance != null && GameRoot.Instance.agentCommunicator != null) {
-                _ = GameRoot.Instance.agentCommunicator.SendCommandRelay(
-                    $"gain_note:{noteType.ToCommandName()}", "raspberry_pi");
+                _ = GameRoot.Instance.agentCommunicator.SendCommand(
+                    $"gain_note:{noteType.ToCommandName()}", relayTo: "raspberry_pi");
             }
 
             _fadeTween.Kill();
@@ -140,8 +140,8 @@ namespace Echoesphere.Runtime.UI {
             if (!_isAcquired || _playTween != null) return;
 
             if (GameRoot.Instance != null && GameRoot.Instance.agentCommunicator != null) {
-                _ = GameRoot.Instance.agentCommunicator.SendCommandRelay(
-                    $"play_note:{noteType.ToCommandName()}", "raspberry_pi");
+                _ = GameRoot.Instance.agentCommunicator.SendCommand(
+                    $"play_note:{noteType.ToCommandName()}", relayTo: "raspberry_pi");
             }
 
             _playTween = PlayAnimation();

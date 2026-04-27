@@ -33,10 +33,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2277475320434682488}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -41, y: 100}
-  m_SizeDelta: {x: 82.73804, y: 89.1}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 100}
+  m_SizeDelta: {x: 0.7380371, y: 89.1}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &2065774995026340881
 CanvasRenderer:
@@ -92,9 +92,15 @@ MonoBehaviour:
   connectionLine: {fileID: 6922434395111913730}
   fadeDuration: 0.4
   connectionLineFadeDuration: 0.25
-  playScaleDuration: 0.4
-  playScale: 1.25
+  playColorDuration: 0.5
+  glowPulseCount: 2
+  glowPulseDuration: 0.2
+  glowIntensity: 0.6
+  acquireScaleDuration: 0.2
+  acquireScale: 1.3
+  acquireSound: {fileID: 0}
   noteImage: {fileID: 534938613518722777}
+  glowImage: {fileID: 0}
 --- !u!1 &1046420585391399663
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,10 +133,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2277475320434682488}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -41, y: -200.1}
-  m_SizeDelta: {x: 82.73804, y: 114.8}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -200.1}
+  m_SizeDelta: {x: 0.7380371, y: 114.8}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &782472106423174098
 CanvasRenderer:
@@ -202,10 +208,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2277475320434682488}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -41, y: 1.2}
-  m_SizeDelta: {x: 82.73804, y: 114.8}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 1.2}
+  m_SizeDelta: {x: 0.7380371, y: 114.8}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &6895694835230039512
 CanvasRenderer:
@@ -305,6 +311,10 @@ MonoBehaviour:
   - {fileID: 1687138753898372354}
   - {fileID: 4684473816399072103}
   - {fileID: 178486045044130076}
+  noteWaterDropAction: {fileID: 2124387011592313396, guid: 1913b5514a45f4276a3d01423cbea1fe, type: 3}
+  noteCrossingAction: {fileID: 6234790915774907352, guid: 1913b5514a45f4276a3d01423cbea1fe, type: 3}
+  noteTideAction: {fileID: -5641300746287520511, guid: 1913b5514a45f4276a3d01423cbea1fe, type: 3}
+  noteBreezeAction: {fileID: 8150327752584750200, guid: 1913b5514a45f4276a3d01423cbea1fe, type: 3}
 --- !u!1 &3216539596488738706
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,10 +347,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2277475320434682488}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -41, y: 197.9}
-  m_SizeDelta: {x: 82.73804, y: 114.8}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 197.9}
+  m_SizeDelta: {x: 0.7380371, y: 114.8}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &196059317393559867
 CanvasRenderer:
@@ -413,10 +423,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2277475320434682488}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -41, y: -300}
-  m_SizeDelta: {x: 82.73804, y: 89.1}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -300}
+  m_SizeDelta: {x: 0.7380371, y: 89.1}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &1301836374092704372
 CanvasRenderer:
@@ -472,9 +482,15 @@ MonoBehaviour:
   connectionLine: {fileID: 906753990343694504}
   fadeDuration: 0.4
   connectionLineFadeDuration: 0.25
-  playScaleDuration: 0.4
-  playScale: 1.25
+  playColorDuration: 0.5
+  glowPulseCount: 2
+  glowPulseDuration: 0.2
+  glowIntensity: 0.6
+  acquireScaleDuration: 0.2
+  acquireScale: 1.3
+  acquireSound: {fileID: 0}
   noteImage: {fileID: 252359336347717989}
+  glowImage: {fileID: 0}
 --- !u!1 &7801564661272736053
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,10 +524,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2277475320434682488}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -41, y: 300}
-  m_SizeDelta: {x: 82.73804, y: 89.1}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 300}
+  m_SizeDelta: {x: 0.7380371, y: 89.1}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &594241674921680076
 CanvasRenderer:
@@ -567,9 +583,15 @@ MonoBehaviour:
   connectionLine: {fileID: 0}
   fadeDuration: 0.4
   connectionLineFadeDuration: 0.25
-  playScaleDuration: 0.4
-  playScale: 1.25
+  playColorDuration: 0.5
+  glowPulseCount: 2
+  glowPulseDuration: 0.2
+  glowIntensity: 0.6
+  acquireScaleDuration: 0.2
+  acquireScale: 1.3
+  acquireSound: {fileID: 0}
   noteImage: {fileID: 5260935481852985177}
+  glowImage: {fileID: 0}
 --- !u!1 &8635744157585257472
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,10 +625,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2277475320434682488}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -41, y: -100}
-  m_SizeDelta: {x: 82.73804, y: 89.1}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -100}
+  m_SizeDelta: {x: 0.7380371, y: 89.1}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &2714483434274180812
 CanvasRenderer:
@@ -662,6 +684,12 @@ MonoBehaviour:
   connectionLine: {fileID: 4396393310589307263}
   fadeDuration: 0.4
   connectionLineFadeDuration: 0.25
-  playScaleDuration: 0.4
-  playScale: 1.25
+  playColorDuration: 0.5
+  glowPulseCount: 2
+  glowPulseDuration: 0.2
+  glowIntensity: 0.6
+  acquireScaleDuration: 0.2
+  acquireScale: 1.3
+  acquireSound: {fileID: 0}
   noteImage: {fileID: 8216506533231864694}
+  glowImage: {fileID: 0}

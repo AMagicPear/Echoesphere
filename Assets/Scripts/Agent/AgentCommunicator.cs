@@ -181,19 +181,11 @@ namespace Echoesphere.Runtime.Agent {
             return SendJson(msg);
         }
 
-        public Task SendCommand(string command, string requestId) {
+        public Task SendCommand(string command, string requestId = null, string relayTo = null) {
             var msg = new JsonMessage {
                 type = "command",
                 data = command,
-                request_id = requestId
-            };
-            return SendJson(msg);
-        }
-
-        public Task SendCommandRelay(string command, string relayTo) {
-            var msg = new JsonMessage {
-                type = "command",
-                data = command,
+                request_id = requestId,
                 relay_to = relayTo
             };
             return SendJson(msg);
