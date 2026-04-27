@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Echoesphere.Runtime.Configuration;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,16 @@ namespace Echoesphere.Runtime.UI {
         Crossing,
         Tide,
         Breeze
+    }
+
+    public static class NoteTypeExtensions {
+        public static string ToCommandName(this NoteType noteType) => noteType switch {
+            NoteType.WaterDrop => "waterdrop",
+            NoteType.Crossing => "crossing",
+            NoteType.Tide => "tide",
+            NoteType.Breeze => "breeze",
+            _ => throw new System.ArgumentOutOfRangeException(nameof(noteType))
+        };
     }
 
     [RequireComponent(typeof(Image))]
@@ -90,6 +101,12 @@ namespace Echoesphere.Runtime.UI {
             if (_isAcquired) return;
             _isAcquired = true;
 
+            // 向 raspberry_pi 发送 gain_note 命令
+            if (GameRoot.Instance != null && GameRoot.Instance.agentCommunicator != null) {
+                _ = GameRoot.Instance.agentCommunicator.SendCommandRelay(
+                    $"gain_note:{noteType.ToCommandName()}", "raspberry_pi");
+            }
+
             _fadeTween.Kill();
             _connectionLineTween.Kill();
 
@@ -121,6 +138,12 @@ namespace Echoesphere.Runtime.UI {
         /// </summary>
         public void Play() {
             if (!_isAcquired || _playTween != null) return;
+
+            if (GameRoot.Instance != null && GameRoot.Instance.agentCommunicator != null) {
+                _ = GameRoot.Instance.agentCommunicator.SendCommandRelay(
+                    $"play_note:{noteType.ToCommandName()}", "raspberry_pi");
+            }
+
             _playTween = PlayAnimation();
         }
 

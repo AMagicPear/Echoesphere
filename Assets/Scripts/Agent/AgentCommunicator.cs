@@ -16,6 +16,7 @@ namespace Echoesphere.Runtime.Agent {
         public string data;       // 文本内容或base64编码数据
         public string client_type; // 发送者身份: echoagent, unity, mediapipe, raspberry_pi
         public string request_id;  // 请求标识UUID
+        public string relay_to;    // 直接转发目标客户端
     }
     
     public class AgentCommunicator : MonoBehaviour {
@@ -185,6 +186,15 @@ namespace Echoesphere.Runtime.Agent {
                 type = "command",
                 data = command,
                 request_id = requestId
+            };
+            return SendJson(msg);
+        }
+
+        public Task SendCommandRelay(string command, string relayTo) {
+            var msg = new JsonMessage {
+                type = "command",
+                data = command,
+                relay_to = relayTo
             };
             return SendJson(msg);
         }

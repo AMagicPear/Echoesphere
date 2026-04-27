@@ -33,7 +33,6 @@ namespace Echoesphere.Runtime.Agent {
 
         public ButtonControl submit_button { get; private set; }
         public ButtonControl cancel_button { get; private set; }
-        // 增加摇杆引用
         public StickControl move_stick { get; private set; }
 
         protected override void FinishSetup() {

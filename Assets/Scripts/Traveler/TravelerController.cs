@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Echoesphere.Runtime.Traveler {
     // [RequireComponent(typeof(PlayerInput))]
     [RequireComponent(typeof(CharacterController))]
     public class TravelerController : MonoBehaviour {
-        [SerializeField] private InputActionReference _moveActionRef;
+        [FormerlySerializedAs("_moveActionRef")] [SerializeField] private InputActionReference moveActionRef;
         private static readonly int Speed = Animator.StringToHash("speed");
         public float moveSpeed = 2.0f;
         public Vector2 moveInput;
@@ -35,7 +36,7 @@ namespace Echoesphere.Runtime.Traveler {
         }
 
         private void Move() {
-            moveInput = _moveActionRef.action.ReadValue<Vector2>();
+            moveInput = moveActionRef.action.ReadValue<Vector2>();
             Vector3 inputDirection = new Vector3(moveInput.x, 0.0f, moveInput.y).normalized;
             if (moveInput != Vector2.zero) {
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
