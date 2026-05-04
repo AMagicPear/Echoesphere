@@ -12,26 +12,21 @@ namespace Echoesphere.Runtime.UI {
         public Button buttonB;
         public Animator animator;
 
+        [Header("Scene Names")]
+        [SerializeField] private string sceneNameA;
+        [SerializeField] private string sceneNameB;
+
         private void Start() {
-            buttonA.onClick.AddListener(LoadSceneA);
-            buttonB.onClick.AddListener(LoadSceneB);
+            buttonA.onClick.AddListener(() => StartCoroutine(LoadScene(sceneNameA)));
+            buttonB.onClick.AddListener(() => StartCoroutine(LoadScene(sceneNameB)));
         }
 
-        private void LoadSceneA() {
-            StartCoroutine(LoadScene(1));
-        }
-
-        private void LoadSceneB() {
-            StartCoroutine(LoadScene(2));
-        }
-
-
-        private IEnumerator LoadScene(int index) {
+        private IEnumerator LoadScene(string sceneName) {
             animator.SetBool(FadeIn, true);
             animator.SetBool(FadeOut, false);
             yield return new WaitForSeconds(1);
-            var asyncOperation = SceneManager.LoadSceneAsync(index);
-            if (asyncOperation != null) asyncOperation.completed += OnLoadedScene;
+            var asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+            asyncOperation.completed += OnLoadedScene;
         }
 
         private void OnLoadedScene(AsyncOperation obj) {

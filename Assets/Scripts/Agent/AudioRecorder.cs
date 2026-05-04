@@ -14,8 +14,9 @@ namespace Echoesphere.Runtime.Agent {
         [Tooltip("音频通道数（通常为2，即立体声）")]
         public int channels = 2;
 
-        // 用于累积音频数据的列表
+        // 用于累积音频数据的列表（音频线程和主线程同时访问，需要加锁）
         private readonly List<float> _recordedData = new();
+        private readonly object _recordedDataLock = new();
         private bool _isRecording = false;
         private float _recordTimer = 0f;
 
@@ -46,17 +47,17 @@ namespace Echoesphere.Runtime.Agent {
             _isRecording = false;
             Debug.Log("录制结束，正在转换数据...");
 
-            // 将录制的 float 数据转换为 16位 PCM 字节数组
-            byte[] audioBytes = ConvertFloatListToPCM16(_recordedData);
+            List<float> dataCopy;
+            lock (_recordedDataLock) {
+                dataCopy = new List<float>(_recordedData);
+                _recordedData.Clear();
+            }
 
-            // 现在你可以对 audioBytes 进行任何操作，例如保存为文件、通过网络发送等
-            // 此处仅演示在控制台输出长度
+            byte[] audioBytes = ConvertFloatListToPCM16(dataCopy);
+
             Debug.Log($"音频数据大小: {audioBytes.Length} 字节");
 
-            // 可选：保存为 WAV 文件（需要额外编码 WAV 头）
             SaveAsWav(audioBytes, "recorded_audio.wav");
-
-            _recordedData.Clear(); // 清理缓存
         }
 
         /// <summary>
@@ -67,8 +68,9 @@ namespace Echoesphere.Runtime.Agent {
         private void OnAudioFilterRead(float[] data, int channels) {
             if (!_isRecording) return;
 
-            // 将数据添加到列表（注意：此方法在音频线程中调用，尽量保持简单）
-            _recordedData.AddRange(data);
+            lock (_recordedDataLock) {
+                _recordedData.AddRange(data);
+            }
         }
 
         /// <summary>
@@ -96,9 +98,9 @@ namespace Echoesphere.Runtime.Agent {
             int sampleRate = AudioSettings.outputSampleRate;
             int bitsPerSample = 16;
             int byteRate = sampleRate * channels * bitsPerSample / 8;
-            Debug.Log(Application.dataPath);
+            Debug.Log(Application.persistentDataPath);
 
-            using (FileStream fs = new FileStream(Application.dataPath + "/" + filename, FileMode.Create))
+            using (FileStream fs = new FileStream(Application.persistentDataPath + "/" + filename, FileMode.Create))
             using (BinaryWriter writer = new BinaryWriter(fs)) {
                 // RIFF 头
                 writer.Write(System.Text.Encoding.UTF8.GetBytes("RIFF"));

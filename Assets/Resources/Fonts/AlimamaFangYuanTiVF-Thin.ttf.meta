@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 268dfb71308b34d94a11f3144effb1b8
+guid: 76ba9c32f2b984f2a95bbe17215fac72
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Alimama ShuHeiTi
+  - Alimama FangYuanTi VF
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

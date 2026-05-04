@@ -36,6 +36,7 @@ namespace Echoesphere.Runtime.Traveler {
         }
 
         private void Move() {
+            var dt = Time.fixedDeltaTime;
             moveInput = moveActionRef.action.ReadValue<Vector2>();
             Vector3 inputDirection = new Vector3(moveInput.x, 0.0f, moveInput.y).normalized;
             if (moveInput != Vector2.zero) {
@@ -46,16 +47,16 @@ namespace Echoesphere.Runtime.Traveler {
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
                 Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
                 Vector3 horizontalMove =
-                    targetDirection.normalized * (moveSpeed * Time.deltaTime * moveInput.magnitude);
-                _controller.Move(horizontalMove + new Vector3(0, _verticalVelocity * Time.deltaTime, 0));
+                    targetDirection.normalized * (moveSpeed * dt * moveInput.magnitude);
+                _controller.Move(horizontalMove + new Vector3(0, _verticalVelocity * dt, 0));
             } else {
-                _controller.Move(new Vector3(0, _verticalVelocity * Time.deltaTime, 0));
+                _controller.Move(new Vector3(0, _verticalVelocity * dt, 0));
             }
         }
 
         private void ApplyGravity() {
             if (!_controller.isGrounded) {
-                _verticalVelocity += Physics.gravity.y * Time.deltaTime;
+                _verticalVelocity += Physics.gravity.y * Time.fixedDeltaTime;
             } else {
                 _verticalVelocity = -.5f;
             }
