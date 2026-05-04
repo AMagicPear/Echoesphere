@@ -1,5 +1,6 @@
 using Echoesphere.Runtime.Agent;
 using Echoesphere.Runtime.UI;
+using Echoesphere.Runtime.UI.MusicNote;
 using UnityEngine;
 
 namespace Echoesphere.Runtime.Configuration {

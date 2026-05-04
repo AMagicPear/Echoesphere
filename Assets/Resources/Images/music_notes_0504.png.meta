@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f8b5ade33f5054ce8986ed5499c54e8d
+guid: c8e4b391521f842ca9307710378d05b1
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: note_waterdrop
+      name: music_notes_0504_waterdrop
       rect:
         serializedVersion: 2
         x: 0
-        y: 5754
-        width: 826
-        height: 891
+        y: 1331
+        width: 286
+        height: 325
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,20 +112,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 313b1baf7adcc49e7a1ebaa2f24861a5
-      internalID: 1661478756
+      spriteID: 6a7605db4a24a4a42a1aa0df14febe99
+      internalID: -1365709279
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: note_tide
+      name: music_notes_0504_connect
       rect:
         serializedVersion: 2
         x: 0
-        y: 1916
-        width: 826
-        height: 897
+        y: 1210
+        width: 286
+        height: 123
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,20 +134,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aa635c51bd3344ec2b4bd89dc2387a10
-      internalID: 1176457095
+      spriteID: 4f4ed5efba8ec4c1283f5371dc82c877
+      internalID: -44032832
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: note_breeze
+      name: music_notes_0504_crossing
       rect:
         serializedVersion: 2
         x: 0
-        y: 5
-        width: 826
-        height: 886
+        y: 889
+        width: 286
+        height: 319
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,20 +156,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2980ae559a1b5438a8e98b67e0362227
-      internalID: -102226553
+      spriteID: f61b8971a0fa74dff98b92e0f290a3f1
+      internalID: 2091108781
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: note_connection_line
+      name: music_notes_0504_tide
       rect:
         serializedVersion: 2
         x: 0
-        y: 4728
-        width: 826
-        height: 1025
+        y: 446
+        width: 286
+        height: 323
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -178,20 +178,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 776c16f0c8da64b9888351de45a40c80
-      internalID: 1215924195
+      spriteID: 2fe0c3366d6c64bf5a17d8cd9e5b6506
+      internalID: -1273529380
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: note_crossing
+      name: music_notes_0504_breeze
       rect:
         serializedVersion: 2
         x: 0
-        y: 3835
-        width: 826
-        height: 892
+        y: 1
+        width: 286
+        height: 324
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -200,8 +200,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 386ac618f6f744cf09f1fd996b9a90b6
-      internalID: -2066077442
+      spriteID: ebe236f92d4f741518525785b17e7fc7
+      internalID: -664099398
       vertices: []
       indices: 
       edges: []
@@ -210,7 +210,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 288627f891a1e420b9c68b7491fe4085
+    spriteID: e775190ba897849a99e1a567dfa89476
     internalID: 0
     vertices: []
     indices: 
@@ -220,17 +220,13 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":8.0},"gridSpriteSize":{"x":826.0,"y":830.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":5.0},"gridSpriteSize":{"x":286.0,"y":331.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      note_Anchorfall: 1661478756
-      note_breeze: -102226553
-      note_connection_line: 1215924195
-      note_crossing: -2066077442
-      note_tide: 1176457095
-      note_waterdrop: 1661478756
-      "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_2": 1720860636
-      "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_5": -577575442
-      "\u6280\u80FD\u548C\u7AE0\u8282\u56FE\u6807_compose_light_6": 747455632
+      music_notes_0504_breeze: -664099398
+      music_notes_0504_connect: -44032832
+      music_notes_0504_crossing: 2091108781
+      music_notes_0504_tide: -1273529380
+      music_notes_0504_waterdrop: -1365709279
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
