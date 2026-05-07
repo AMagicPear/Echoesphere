@@ -6,20 +6,26 @@ using Random = UnityEngine.Random;
 
 namespace Echoesphere.Runtime.Stuff {
     public class EchoTitle : MonoBehaviour {
-        private enum State { Floating, Dismissing, Dismissed }
+        private static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
+        private static readonly int Surface = Shader.PropertyToID("_Surface");
+        private static readonly int Blend = Shader.PropertyToID("_Blend");
+
+        private enum State {
+            Floating,
+            Dismissing,
+            Dismissed
+        }
 
         [Header("Input Settings")] [SerializeField]
         private InputActionReference projectWideInput;
 
-        [Header("Floating")] [Range(0f, 0.1f)]
-        public float positionStrength = 0.005f;
+        [Header("Floating")] [Range(0f, 0.1f)] public float positionStrength = 0.005f;
 
         [Range(0f, 10f)] public float positionSpeed = 1f;
         [Range(0f, 5f)] public float rotationStrength = 0.5f;
         [Range(0f, 10f)] public float rotationSpeed = 1f;
 
-        [Header("Dismiss")] [Range(0.5f, 5f)]
-        public float dismissDuration = 3f;
+        [Header("Dismiss")] [Range(0.5f, 5f)] public float dismissDuration = 3f;
 
         public float dismissSpreadRadius = 2f;
         public float dismissRandomRotation = 180f;
@@ -79,11 +85,11 @@ namespace Echoesphere.Runtime.Stuff {
                 _renderers[i] = _children[i].GetComponent<MeshRenderer>();
                 if (_renderers[i] != null) {
                     var mat = _renderers[i].material;
-                    mat.SetFloat("_Surface", 1);
-                    mat.SetFloat("_Blend", 0);
+                    mat.SetFloat(Surface, 1);
+                    mat.SetFloat(Blend, 0);
                     mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
                     mat.renderQueue = 3000;
-                    _baseColors[i] = mat.GetColor("_BaseColor");
+                    _baseColors[i] = mat.GetColor(BaseColor);
 
                     _propertyBlocks[i] = new MaterialPropertyBlock();
                     _renderers[i].GetPropertyBlock(_propertyBlocks[i]);
@@ -138,6 +144,7 @@ namespace Echoesphere.Runtime.Stuff {
 
             _state = State.Dismissed;
             OnDismissComplete?.Invoke();
+            gameObject.SetActive(false);
         }
 
         private void SetChildAlpha(int index, float alpha) {
@@ -146,7 +153,7 @@ namespace Echoesphere.Runtime.Stuff {
             var block = _propertyBlocks[index];
             var color = _baseColors[index];
             color.a = alpha;
-            block.SetColor("_BaseColor", color);
+            block.SetColor(BaseColor, color);
             _renderers[index].SetPropertyBlock(block);
         }
 
