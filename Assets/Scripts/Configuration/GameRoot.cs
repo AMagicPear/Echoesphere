@@ -1,4 +1,5 @@
 using Echoesphere.Runtime.Agent;
+using Echoesphere.Runtime.Configuration.Providers;
 using Echoesphere.Runtime.UI;
 using Echoesphere.Runtime.UI.MusicNote;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace Echoesphere.Runtime.Configuration {
         public Agent.AgentCommunicator agentCommunicator;
         public MusicNoteController musicNoteController;
         public EchoEventCenter echoEventCenter;
+        public GameStateManager gameStateManager;
 
         private void Awake() {
             if (Instance) {

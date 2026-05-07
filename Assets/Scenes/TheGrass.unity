@@ -923,10 +923,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f47540f23d4b3fb2b339291382ed38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Managers.GameRoot
-  saveManager: {fileID: 944864300}
-  agentCommunicator: {fileID: 1090483122}
+  saveManager: {fileID: 1452322821}
+  agentCommunicator: {fileID: 1452322820}
   musicNoteController: {fileID: 1981866994}
-  echoEventCenter: {fileID: 1187794872}
+  echoEventCenter: {fileID: 1452322819}
+  gameStateManager: {fileID: 1452322822}
 --- !u!4 &651547145
 Transform:
   m_ObjectHideFlags: 0
@@ -1303,50 +1304,6 @@ Transform:
   - {fileID: 1061848437}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &944864299
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 944864301}
-  - component: {fileID: 944864300}
-  m_Layer: 0
-  m_Name: SaveManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &944864300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 944864299}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0c31d87e46041e481708360063804a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Managers.SaveManager
---- !u!4 &944864301
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 944864299}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1452322818}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1009297887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1680,96 +1637,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1085308903}
   m_CullTransparentMesh: 1
---- !u!1 &1090483120
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1090483121}
-  - component: {fileID: 1090483122}
-  m_Layer: 0
-  m_Name: RaspberryPi
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1090483121
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1090483120}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1452322818}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1090483122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1090483120}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a815e2dd9d89c48ea888c8f5cc15c2d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Echoesphere.Runtime::RaspberryPi.RaspberryPiCommunicator
-  host: 127.0.0.1
-  port: 65432
---- !u!1 &1187794870
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1187794871}
-  - component: {fileID: 1187794872}
-  m_Layer: 0
-  m_Name: EchoGameEvents
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1187794871
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1187794870}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1452322818}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1187794872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1187794870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36b4b3e28fb23ff43b77e12074a97d85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Echoesphere.Runtime::Echoesphere.Runtime.Agent.EchoEventCenter
 --- !u!1 &1351693389
 GameObject:
   m_ObjectHideFlags: 0
@@ -1964,6 +1831,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1452322818}
+  - component: {fileID: 1452322821}
+  - component: {fileID: 1452322820}
+  - component: {fileID: 1452322819}
+  - component: {fileID: 1452322822}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1983,12 +1854,65 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 944864301}
-  - {fileID: 1090483121}
-  - {fileID: 1187794871}
+  m_Children: []
   m_Father: {fileID: 651547145}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1452322819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452322817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36b4b3e28fb23ff43b77e12074a97d85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Echoesphere.Runtime::Echoesphere.Runtime.Agent.EchoEventCenter
+--- !u!114 &1452322820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452322817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a815e2dd9d89c48ea888c8f5cc15c2d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Echoesphere.Runtime::RaspberryPi.RaspberryPiCommunicator
+  host: 127.0.0.1
+  port: 65432
+--- !u!114 &1452322821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452322817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0c31d87e46041e481708360063804a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Managers.SaveManager
+--- !u!114 &1452322822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452322817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8364bda31ee254c6b8a300b82d0a0cf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Echoesphere.Runtime::Echoesphere.Runtime.Configuration.GameStateManager
+  uniqueId: game_state_manager
+  state:
+    chapter: 0
+    echoTitleActive: 1
+  playerInputActions: {fileID: -944628639613478452, guid: 1913b5514a45f4276a3d01423cbea1fe, type: 3}
+  echoTitle: {fileID: 1992122540}
 --- !u!1 &1510634860
 GameObject:
   m_ObjectHideFlags: 0
@@ -2695,42 +2619,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 82368864}
     m_Modifications:
-    - target: {fileID: 178486045044130076, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
-      propertyPath: offsetColor.b
-      value: 0.54801184
-      objectReference: {fileID: 0}
-    - target: {fileID: 178486045044130076, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
-      propertyPath: offsetColor.g
-      value: 0.9339623
-      objectReference: {fileID: 0}
-    - target: {fileID: 178486045044130076, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
-      propertyPath: offsetColor.r
-      value: 0.33922213
-      objectReference: {fileID: 0}
-    - target: {fileID: 758600361261316395, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
-      propertyPath: offsetColor.b
-      value: 0.9056604
-      objectReference: {fileID: 0}
-    - target: {fileID: 758600361261316395, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
-      propertyPath: offsetColor.g
-      value: 0.7996865
-      objectReference: {fileID: 0}
-    - target: {fileID: 758600361261316395, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
-      propertyPath: offsetColor.r
-      value: 0.38020647
-      objectReference: {fileID: 0}
-    - target: {fileID: 1687138753898372354, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
-      propertyPath: offsetColor.b
-      value: 0.9245283
-      objectReference: {fileID: 0}
-    - target: {fileID: 1687138753898372354, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
-      propertyPath: offsetColor.g
-      value: 0.40557134
-      objectReference: {fileID: 0}
-    - target: {fileID: 1687138753898372354, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
-      propertyPath: offsetColor.r
-      value: 0.48541093
-      objectReference: {fileID: 0}
     - target: {fileID: 2277475320434682488, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2797,7 +2685,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2277475320434682488, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000015258789
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2277475320434682488, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2814,22 +2702,6 @@ PrefabInstance:
     - target: {fileID: 3206697335777741832, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
       propertyPath: m_Name
       value: Music Notes
-      objectReference: {fileID: 0}
-    - target: {fileID: 4684473816399072103, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
-      propertyPath: offsetColor.b
-      value: 0.9433962
-      objectReference: {fileID: 0}
-    - target: {fileID: 4684473816399072103, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
-      propertyPath: offsetColor.g
-      value: 0.49278712
-      objectReference: {fileID: 0}
-    - target: {fileID: 4684473816399072103, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
-      propertyPath: offsetColor.r
-      value: 0.33374867
-      objectReference: {fileID: 0}
-    - target: {fileID: 5971336235125198912, guid: 3862b28c1cd254f4f9822a6870c42f6a, type: 3}
-      propertyPath: playPulseDuration
-      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2913,6 +2785,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ddaa2241831334bec9209efeca0d3484, type: 3}
+--- !u!114 &1992122540 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2809322313614758188, guid: ddaa2241831334bec9209efeca0d3484, type: 3}
+  m_PrefabInstance: {fileID: 1992122539}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc3a1e3cfba5425991744c81767e64d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Echoesphere.Runtime::Echoesphere.Runtime.Stuff.EchoTitle
 --- !u!1 &2137261016
 GameObject:
   m_ObjectHideFlags: 0

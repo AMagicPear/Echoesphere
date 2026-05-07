@@ -28,6 +28,9 @@ namespace Echoesphere.Runtime.Agent {
         public event Action<string> OnImageReceived;
         public event Action<JsonMessage> OnCommandReceived;
         public event Action<bool> OnConnectionStatusChanged;
+        public event Action OnHandSweepGesture;
+
+        public bool FacePresent { get; private set; }
 
         private TcpClient _tcpClient;
         private NetworkStream _stream;
@@ -44,15 +47,33 @@ namespace Echoesphere.Runtime.Agent {
 
         private void OnEnable() {
             OnCommandReceived += HandleScreenshot;
+            OnCommandReceived += HandleFacePresence;
+            OnCommandReceived += HandleHandSweep;
         }
 
         private void OnDisable() {
             OnCommandReceived -= HandleScreenshot;
+            OnCommandReceived -= HandleFacePresence;
+            OnCommandReceived -= HandleHandSweep;
         }
 
         private void HandleScreenshot(JsonMessage msg) {
             if (msg.data == "request:screenshot" && !string.IsNullOrEmpty(msg.requestId)) {
                 StartCoroutine(SendScreenshot(msg.requestId));
+            }
+        }
+
+        private void HandleFacePresence(JsonMessage msg) {
+            FacePresent = msg.data switch {
+                "face:in" => true,
+                "face:out" => false,
+                _ => FacePresent
+            };
+        }
+
+        private void HandleHandSweep(JsonMessage msg) {
+            if (msg.data == "hand:sweep") {
+                _mainThreadContext.Post(_ => OnHandSweepGesture?.Invoke(), null);
             }
         }
 
