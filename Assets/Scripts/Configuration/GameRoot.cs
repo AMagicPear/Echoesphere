@@ -1,8 +1,8 @@
 using Echoesphere.Runtime.Agent;
 using Echoesphere.Runtime.Configuration.Providers;
-using Echoesphere.Runtime.UI;
 using Echoesphere.Runtime.UI.MusicNote;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Echoesphere.Runtime.Configuration {
     [DefaultExecutionOrder(-100)]   // 使得GameRoot提早执行以防止引用错误
@@ -11,9 +11,9 @@ namespace Echoesphere.Runtime.Configuration {
 
         [Header("Managers")]
         public SaveManager saveManager;
-        public Agent.AgentCommunicator agentCommunicator;
+        public AgentCommunicator agentCommunicator;
         public MusicNoteController musicNoteController;
-        public EchoEventCenter echoEventCenter;
+        [FormerlySerializedAs("echoEventCenter")] public EchoGameEvents echoGameEvents;
         public GameStateManager gameStateManager;
 
         private void Awake() {
