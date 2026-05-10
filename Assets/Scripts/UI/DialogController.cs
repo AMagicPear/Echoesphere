@@ -15,41 +15,23 @@ namespace Echoesphere.Runtime.UI {
 
         private void Awake() {
             _audioSource = gameObject.GetComponent<AudioSource>();
-            if (_audioSource == null) {
-                _audioSource = gameObject.AddComponent<AudioSource>();
-            }
-            if (dialogCanvas != null) {
-                dialogCanvas.alpha = 0f;
-                dialogCanvas.blocksRaycasts = false;
-            }
+            dialogCanvas.alpha = 0f;
+            dialogCanvas.blocksRaycasts = false;
         }
 
         public void Show(int dialogIndex) {
-            if (dialogSheet == null || dialogSheet.dialogs == null) return;
             if (dialogIndex < 0 || dialogIndex >= dialogSheet.dialogs.Length) return;
-
             var dialog = dialogSheet.dialogs[dialogIndex];
             _currentIndex = dialogIndex;
-
             _fadeTween?.Kill();
             _autoHideTween?.Kill();
-
-            if (dialogText != null) {
-                dialogText.text = dialog.text;
-            }
-
-            if (dialog.audioClip != null) {
-                _audioSource.clip = dialog.audioClip;
-                _audioSource.Play();
-            }
-
-            if (dialogCanvas != null) {
-                dialogCanvas.blocksRaycasts = true;
-                _fadeTween = dialogCanvas.DOFade(1f, 0.3f).SetUpdate(true);
-            }
-
-            if (dialog.duration > 0f) {
-                _autoHideTween = DOVirtual.DelayedCall(dialog.duration, Hide, false);
+            dialogText.text = dialog.text;
+            _audioSource.clip = dialog.audioClip;
+            _audioSource.Play();
+            dialogCanvas.blocksRaycasts = true;
+            _fadeTween = dialogCanvas.DOFade(1f, 0.3f).SetUpdate(true);
+            if (dialog.autoHide && dialog.audioClip != null) {
+                _autoHideTween = DOVirtual.DelayedCall(dialog.audioClip.length, Hide, false);
             }
         }
 
@@ -57,17 +39,12 @@ namespace Echoesphere.Runtime.UI {
             _fadeTween?.Kill();
             _autoHideTween?.Kill();
             _audioSource?.Stop();
-
-            if (dialogCanvas != null) {
-                _fadeTween = dialogCanvas.DOFade(0f, 0.3f).SetUpdate(true).OnComplete(() => {
-                    dialogCanvas.blocksRaycasts = false;
-                    _currentIndex = -1;
-                });
-            } else {
+            _fadeTween = dialogCanvas.DOFade(0f, 0.3f).SetUpdate(true).OnComplete(() => {
+                dialogCanvas.blocksRaycasts = false;
                 _currentIndex = -1;
-            }
+            });
         }
 
-        public bool IsShowing => _currentIndex >= 0 && (dialogCanvas == null || dialogCanvas.alpha > 0f);
+        public bool IsShowing => _currentIndex >= 0 && dialogCanvas.alpha > 0f;
     }
 }

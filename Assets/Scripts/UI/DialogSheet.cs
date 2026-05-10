@@ -8,7 +8,7 @@ namespace Echoesphere.Runtime.UI {
     public record Dialog {
         public string text;
         [CanBeNull] public AudioClip audioClip;
-        public float duration; // 新增：持续时间（秒），<= 0 表示不自动隐藏
+        public bool autoHide; // 是否在音频播放完后自动隐藏
     }
 
     [CreateAssetMenu(fileName = "Dialog", menuName = "Dialog", order = 0)]

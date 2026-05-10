@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 namespace Echoesphere.Runtime.Stuff {
@@ -15,9 +14,6 @@ namespace Echoesphere.Runtime.Stuff {
             Dismissing,
             Dismissed
         }
-
-        [Header("Input Settings")] [SerializeField]
-        private InputActionReference projectWideInput;
 
         [Header("Floating")] [Range(0f, 0.1f)] public float positionStrength = 0.005f;
 
@@ -43,22 +39,6 @@ namespace Echoesphere.Runtime.Stuff {
         private MaterialPropertyBlock[] _propertyBlocks;
         private Color[] _baseColors;
         private State _state = State.Floating;
-
-        private void OnEnable() {
-            if (projectWideInput != null) {
-                projectWideInput.action.performed += OnSubmitPerformed;
-            }
-        }
-
-        private void OnDisable() {
-            if (projectWideInput != null) {
-                projectWideInput.action.performed -= OnSubmitPerformed;
-            }
-        }
-
-        private void OnSubmitPerformed(InputAction.CallbackContext context) {
-            Dismiss();
-        }
 
         private void Start() {
             int childCount = transform.childCount;

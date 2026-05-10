@@ -1,9 +1,14 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
 namespace Echoesphere.Runtime.Configuration {
     public class SaveManager : MonoBehaviour {
         public EchoesphereSaveData Current { get; private set; }
+
+        private void Start() {
+            Load();
+        }
 
         public void Save() {
             Current = CollectAllState();
@@ -22,7 +27,7 @@ namespace Echoesphere.Runtime.Configuration {
             foreach (var provider in providers) {
                 string id = provider.UniqueId;
                 object state = provider.CaptureState();
-                data.Objects[id] = state;
+                data.objects[id] = state;
             }
 
             return data;
@@ -33,7 +38,7 @@ namespace Echoesphere.Runtime.Configuration {
                 .OfType<ISaveProvider>();
             foreach (var provider in providers) {
                 string id = provider.UniqueId;
-                if (data.Objects.TryGetValue(id, out var state)) {
+                if (data.objects.TryGetValue(id, out var state)) {
                     provider.RestoreState(state);
                 }
             }

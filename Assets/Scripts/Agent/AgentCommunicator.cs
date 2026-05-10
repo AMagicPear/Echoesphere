@@ -19,7 +19,8 @@ namespace Echoesphere.Runtime.Agent {
         [JsonProperty("request_id")] public string requestId; // 请求标识UUID
         [JsonProperty("relay_to")] public string relayTo; // 直接转发目标客户端
     }
-
+    
+    [DefaultExecutionOrder(-98)] 
     public class AgentCommunicator : MonoBehaviour {
         [Header("服务器设置")] public string host = "127.0.0.1";
         [Header("服务器端口")] public int port = 65432;

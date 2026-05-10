@@ -1,5 +1,6 @@
 using Echoesphere.Runtime.Agent;
 using Echoesphere.Runtime.Configuration.Providers;
+using Echoesphere.Runtime.UI;
 using Echoesphere.Runtime.UI.MusicNote;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -15,6 +16,7 @@ namespace Echoesphere.Runtime.Configuration {
         public MusicNoteController musicNoteController;
         [FormerlySerializedAs("echoEventCenter")] public EchoGameEvents echoGameEvents;
         public GameStateManager gameStateManager;
+        public DialogController dialogController;
 
         private void Awake() {
             if (Instance) {

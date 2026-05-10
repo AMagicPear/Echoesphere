@@ -26,7 +26,7 @@ namespace Echoesphere.Runtime.UI {
             animator.SetBool(FadeOut, false);
             yield return new WaitForSeconds(1);
             var asyncOperation = SceneManager.LoadSceneAsync(sceneName);
-            asyncOperation.completed += OnLoadedScene;
+            if (asyncOperation != null) asyncOperation.completed += OnLoadedScene;
         }
 
         private void OnLoadedScene(AsyncOperation obj) {
