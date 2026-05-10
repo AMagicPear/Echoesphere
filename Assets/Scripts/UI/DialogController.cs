@@ -1,7 +1,6 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Echoesphere.Runtime.UI {
     public class DialogController : MonoBehaviour {
@@ -62,10 +61,11 @@ namespace Echoesphere.Runtime.UI {
             if (dialogCanvas != null) {
                 _fadeTween = dialogCanvas.DOFade(0f, 0.3f).SetUpdate(true).OnComplete(() => {
                     dialogCanvas.blocksRaycasts = false;
+                    _currentIndex = -1;
                 });
+            } else {
+                _currentIndex = -1;
             }
-
-            _currentIndex = -1;
         }
 
         public bool IsShowing => _currentIndex >= 0 && (dialogCanvas == null || dialogCanvas.alpha > 0f);
