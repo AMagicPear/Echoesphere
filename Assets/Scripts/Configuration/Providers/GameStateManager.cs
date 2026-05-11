@@ -1,4 +1,3 @@
-using DG.Tweening;
 using Echoesphere.Runtime.Agent;
 using Echoesphere.Runtime.Stuff;
 using Echoesphere.Runtime.UI;
@@ -36,8 +35,9 @@ namespace Echoesphere.Runtime.Configuration.Providers {
         [SerializeField] private InputActionReference submitActionReference;
 
         [SerializeField] private EchoTitle echoTitle;
-
-        [SerializeField] private CinemachineSplineDolly splineDolly;
+        
+        [SerializeField] private Animator cameraAnimator;
+        
 
         private static DialogController DialogController => GameRoot.Instance.dialogController;
 
@@ -132,15 +132,15 @@ namespace Echoesphere.Runtime.Configuration.Providers {
         }
 
         private void MoveCameraTo(float target) {
-            if (Mathf.Approximately(_lastTarget, target)) return;
-            _lastTarget = target;
-
-            DOTween.To(
-                () => splineDolly.CameraPosition,
-                x => splineDolly.CameraPosition = x,
-                target,
-                cameraMoveDuration
-            ).SetEase(Ease.OutQuad);
+            // if (Mathf.Approximately(_lastTarget, target)) return;
+            // _lastTarget = target;
+            //
+            // DOTween.To(
+            //     () => splineDolly.CameraPosition,
+            //     x => splineDolly.CameraPosition = x,
+            //     target,
+            //     cameraMoveDuration
+            // ).SetEase(Ease.OutQuad);
         }
 
         private void OnTitleDismissed() {

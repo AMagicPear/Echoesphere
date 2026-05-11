@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Echoesphere.Runtime.Environment {
+namespace Echoesphere.Runtime.Stuff {
     public class Fog : MonoBehaviour {
         private static readonly int Offset = Shader.PropertyToID("_Offset");
         [Header("Fog Offset")]

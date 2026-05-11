@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Echoesphere.Runtime.Environment {
+namespace Echoesphere.Runtime.Stuff {
     [Serializable]
     public class HandData {
         public int h;
