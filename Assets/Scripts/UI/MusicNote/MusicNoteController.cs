@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Echoesphere.Runtime.Configuration;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Echoesphere.Runtime.UI.MusicNote {
-    public class MusicNoteController : MonoBehaviour {
+    public class MusicNoteController : MonoBehaviour, ISaveProvider {
         [SerializeField] private MusicNote[] musicNotes;
+        public string UniqueId => "music_note_controller";
 
         [Header("Animation")] public float fadeDuration = 0.4f;
         public float connectionLineFadeDuration = 0.25f;
@@ -74,6 +76,14 @@ namespace Echoesphere.Runtime.UI.MusicNote {
         public void PlayRandomAcquireSound() {
             var clip = acquireSounds[UnityEngine.Random.Range(0, acquireSounds.Length)];
             PlaySound(clip);
+        }
+
+        public object CaptureState() {
+            return musicNotes;
+        }
+
+        public void RestoreState(object state) {
+            musicNotes = (MusicNote[])state;
         }
     }
 }

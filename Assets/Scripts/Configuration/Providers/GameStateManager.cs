@@ -1,7 +1,6 @@
 using Echoesphere.Runtime.Agent;
 using Echoesphere.Runtime.Stuff;
 using Echoesphere.Runtime.UI;
-using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -35,11 +34,18 @@ namespace Echoesphere.Runtime.Configuration.Providers {
         [SerializeField] private InputActionReference submitActionReference;
 
         [SerializeField] private EchoTitle echoTitle;
-        
+
         [SerializeField] private Animator cameraAnimator;
-        
+
+        private static readonly int AnimFacePresent = Animator.StringToHash("FacePresent");
+        private static readonly int AnimIsShowing = Animator.StringToHash("IsShowingWaterdrop");
+        private static readonly int AnimEchoTitleActive = Animator.StringToHash("EchoTitleActive");
+        private static readonly int AnimExitBornPoint = Animator.StringToHash("ExitBornPoint");
 
         private static DialogController DialogController => GameRoot.Instance.dialogController;
+
+        private bool _facePresent;
+        private bool _isShowingWaterdrop;
 
         public ChapterState CurrentChapter {
             get => gameState.chapter;
@@ -50,16 +56,46 @@ namespace Echoesphere.Runtime.Configuration.Providers {
             get => gameState.atBornPoint;
             set {
                 if (value) {
-                    if (!gameState.echoTitleActive) {
+                    if (!EchoTitleActive) {
                         DialogController.Hide();
-                        MoveCameraTo(1);
                     }
                 } else {
                     DialogController.Show(2);
-                    MoveCameraTo(0);
+                    cameraAnimator.SetTrigger(AnimExitBornPoint);
                 }
 
                 gameState.atBornPoint = value;
+            }
+        }
+
+        private bool EchoTitleActive {
+            get => gameState.echoTitleActive;
+            set {
+                gameState.echoTitleActive = value;
+                cameraAnimator.SetBool(AnimEchoTitleActive, value);
+            }
+        }
+
+        public bool FacePresent {
+            get => _facePresent;
+            set {
+                _facePresent = value;
+                cameraAnimator.SetBool(AnimFacePresent, value);
+            }
+        }
+        
+        public bool IsShowingWaterdrop {
+            get => _isShowingWaterdrop;
+            set {
+                _isShowingWaterdrop = value;
+                cameraAnimator.SetBool(AnimIsShowing, value);
+                if (value) {
+                    playerInputActions?.FindActionMap("Player")?.Disable();
+                    DialogController.Show(5);
+                } else {
+                    playerInputActions?.FindActionMap("Player")?.Enable();
+                    DialogController.Show(6);
+                }
             }
         }
 
@@ -67,19 +103,11 @@ namespace Echoesphere.Runtime.Configuration.Providers {
 
         public void RestoreState(object data) {
             if (data is GameState s) gameState = s;
-            if (!gameState.echoTitleActive) {
-                DialogController.Hide();
-                echoTitle.gameObject.SetActive(false);
-                MoveCameraTo(2);
-            }
-
-            if (!gameState.atBornPoint) {
-                MoveCameraTo(0);
-            }
+            if (EchoTitleActive) return;
+            DialogController.Hide();
+            echoTitle.gameObject.SetActive(false);
         }
-
-        public bool FacePresent { get; private set; }
-
+        
         private float _lastTarget;
 
         private static AgentCommunicator Agent => GameRoot.Instance.agentCommunicator;
@@ -91,7 +119,7 @@ namespace Echoesphere.Runtime.Configuration.Providers {
         }
 
         private void Start() {
-            if (!gameState.echoTitleActive) return;
+            if (!EchoTitleActive) return;
             playerInputActions?.FindActionMap("Player")?.Disable();
             FacePresent = false;
         }
@@ -105,7 +133,7 @@ namespace Echoesphere.Runtime.Configuration.Providers {
         private void OnSubmitPerformed(InputAction.CallbackContext context) {
             if (!FacePresent) return;
             echoTitle.Dismiss();
-            gameState.echoTitleActive = false;
+            EchoTitleActive = false;
             DialogController.Hide();
             Agent.SendCommand("chase:lightgreen", null, "raspberry_pi");
         }
@@ -114,33 +142,18 @@ namespace Echoesphere.Runtime.Configuration.Providers {
             switch (msg.data) {
                 case "face:in":
                     FacePresent = true;
-                    if (gameState.echoTitleActive) {
-                        MoveCameraTo(2);
+                    if (EchoTitleActive) {
                         DialogController.Show(0);
                     }
 
                     break;
                 case "face:out":
                     FacePresent = false;
-                    if (gameState.echoTitleActive) {
-                        MoveCameraTo(3);
+                    if (EchoTitleActive) {
                         DialogController.Hide();
                     }
-
                     break;
             }
-        }
-
-        private void MoveCameraTo(float target) {
-            // if (Mathf.Approximately(_lastTarget, target)) return;
-            // _lastTarget = target;
-            //
-            // DOTween.To(
-            //     () => splineDolly.CameraPosition,
-            //     x => splineDolly.CameraPosition = x,
-            //     target,
-            //     cameraMoveDuration
-            // ).SetEase(Ease.OutQuad);
         }
 
         private void OnTitleDismissed() {

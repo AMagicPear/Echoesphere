@@ -5,9 +5,12 @@ using UnityEngine;
 namespace Echoesphere.Runtime.Configuration {
     public class SaveManager : MonoBehaviour {
         public EchoesphereSaveData Current { get; private set; }
+        public bool loadOnStart = true;
 
         private void Start() {
-            Load();
+            if (loadOnStart) {
+                Load();
+            }
         }
 
         public void Save() {

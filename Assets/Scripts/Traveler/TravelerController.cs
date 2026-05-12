@@ -3,7 +3,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 namespace Echoesphere.Runtime.Traveler {
-    // [RequireComponent(typeof(PlayerInput))]
     [RequireComponent(typeof(CharacterController))]
     public class TravelerController : MonoBehaviour {
         [FormerlySerializedAs("_moveActionRef")] [SerializeField] private InputActionReference moveActionRef;
@@ -67,6 +66,7 @@ namespace Echoesphere.Runtime.Traveler {
         }
 
         // private void OnControllerColliderHit(ControllerColliderHit hit) {
+        //     Debug.Log($"OnControllerColliderHit: {hit.collider.name}");
         // }
     }
 }
