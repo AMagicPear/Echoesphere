@@ -15,6 +15,7 @@ namespace Echoesphere.Runtime.UI.MusicNote {
         [Header("Audio")] [SerializeField] private AudioClip playSound;
 
         private Image _noteImage;
+        private Color _originalColor;
         private Sequence _acquireSequence;
         private bool _isAcquired;
         public MusicNoteController controller;
@@ -23,6 +24,7 @@ namespace Echoesphere.Runtime.UI.MusicNote {
 
         private void Awake() {
             _noteImage = GetComponent<Image>();
+            _originalColor = _noteImage.color;
             _noteImage.DOFade(0f, 0f);
             if (connectionLine != null) connectionLine.DOFade(0f, 0f);
         }
@@ -60,10 +62,9 @@ namespace Echoesphere.Runtime.UI.MusicNote {
             if (!_isAcquired) return;
             SendCommand("play_note");
 
-            var originalColor = _noteImage.color;
             DOTween.Sequence()
                 .Append(_noteImage.DOColor(offsetColor, controller.playPulseDuration))
-                .Append(_noteImage.DOColor(originalColor, controller.playPulseDuration));
+                .Append(_noteImage.DOColor(_originalColor, controller.playPulseDuration));
 
             controller.PlaySound(playSound);
         }
