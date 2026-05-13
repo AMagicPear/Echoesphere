@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using Echoesphere.Runtime.Agent;
+using UnityEngine;
 
 namespace Echoesphere.Runtime.Stuff {
     
     public class GhostMountain : MonoBehaviour {
         private static readonly int WobbleSpeed = Shader.PropertyToID("_WobbleSpeed");
         private static readonly int WobbleIntensity = Shader.PropertyToID("_WobbleIntensity");
+        private static readonly int FresnelColor = Shader.PropertyToID("_FresnelColor");
+        
         [Header("Mountain Wobble")] public float wobbleSpeed = 0.2f;
         public float initialWobbleSpeed = 0.2f;
         public float wobbleIntensity = 1f;
@@ -12,6 +16,43 @@ namespace Echoesphere.Runtime.Stuff {
         public Material mountainMaterial;
 
         private float _playerSpeed = 0;
+        private AgentCommunicator _agent;
+
+        private void Awake() {
+            _agent = FindFirstObjectByType<AgentCommunicator>();
+        }
+
+        private void OnEnable() {
+            _agent.OnCommandReceived += OnCommandReceived;
+        }
+
+        private void OnDisable() {
+            _agent.OnCommandReceived -= OnCommandReceived;
+        }
+
+        private void OnCommandReceived(JsonMessage msg) {
+            if (!msg.data.StartsWith("ghost_mountain:")) return;
+            var payload = msg.data.Substring(15); // strip "ghost_mountain:"
+            var segments = payload.Split(':');
+            if (segments.Length != 2) return;
+            var key = segments[0].Trim();
+            var value = segments[1].Trim();
+
+            switch (key) {
+                case "intensity":
+                case "wobble":
+                    if (float.TryParse(value, out var intensity)) {
+                        wobbleIntensity = intensity;
+                        mountainMaterial.SetFloat(WobbleIntensity, intensity);
+                    }
+                    break;
+                case "color":
+                    if (ColorUtility.TryParseHtmlString("#" + value, out var color)) {
+                        mountainMaterial.SetColor(FresnelColor, color);
+                    }
+                    break;
+            }
+        }
 
         private void Start() {
             wobbleSpeed = initialWobbleSpeed;
